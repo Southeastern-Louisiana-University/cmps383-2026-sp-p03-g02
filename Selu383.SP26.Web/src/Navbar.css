@@ -1,15 +1,19 @@
 .nav-link {
   /* padding: 1em; */
   color: 'inherit';
+}
+
+.nav-link.active{
+  /* padding: 1em; */
+  color: 'inherit';
   border-radius: 10px;
   border-color: black;
   border: 1px solid;
 }
-.nav-linka{
+
+.nav-link :hover{
   /* padding: 1em; */
   color: 'inherit';
   border-radius: 10px;
-  border-color: gray;
-  background-color: rgb(255, 127, 80, 0.5);
-  border: 1px solid;
+  background-color: rgba(0, 0, 0, 0.2);
 }

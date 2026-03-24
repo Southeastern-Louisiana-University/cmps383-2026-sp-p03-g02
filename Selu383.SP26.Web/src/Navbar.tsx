@@ -1,10 +1,9 @@
 import { Group } from "@mantine/core";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Text } from "@mantine/core";
 import "./Navbar.css";
 
 function Navbar() {
-  const currentPage = useLocation().pathname;
 
   return (
     <div
@@ -21,28 +20,28 @@ function Navbar() {
         <h2> Caffeinated Lions </h2>
         <NavLink
           to="/"
-          className={({ isActive }) => (isActive ? "nav-linka " : "nav-link")}
+          className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <Text style={{ padding: "10px" }}>Home</Text>
         </NavLink>
         <NavLink
           to="/menu"
-          className={({ isActive }) => (isActive ? "nav-linka" : "nav-link")}
+          className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <Text style={{ padding: "10px" }}>Menu</Text>
         </NavLink>
         <NavLink
           to="/orders"
-          className={({ isActive }) => (isActive ? "nav-linka" : "nav-link")}
+          className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <Text style={{ padding: "10px" }}>Orders</Text>
         </NavLink>
         <NavLink
           to="/reservations"
-          className={({ isActive }) => (isActive ? "nav-linka" : "nav-link")}
+          className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <Text style={{ padding: "10px" }}>Reservations</Text>
@@ -50,7 +49,7 @@ function Navbar() {
         <p></p>
         <NavLink
           to="/login"
-          className={({ isActive }) => (isActive ? "nav-linka" : "nav-link")}
+          className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <Text style={{ padding: "10px" }}>Login</Text>
