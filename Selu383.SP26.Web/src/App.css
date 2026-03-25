@@ -46,7 +46,7 @@
   border-radius: 60px;
 }
 
-.menu-item.image{
+.menu-item.image {
   border-radius: 60px;
   max-width: 500px;
   border-color: black;
@@ -54,11 +54,11 @@
   transition: all .2s ease-in-out;
 }
 
-.menu-item.image:hover{
+.menu-item.image:hover {
   transform: scale(1.05);
 }
 
-.menu-item.image img{
+.menu-item.image img {
   border-radius: 60px;
 }
 
@@ -69,5 +69,25 @@
 .menu-item.home.image {
   border-radius: 30px;
   max-width: 300px;
-  border: 0px ;
+  border: 0px;
+}
+
+.order {
+  padding: 15px;
+  border-radius: 30px;
+  border-color: black;
+  border: 1px solid;
+}
+
+.order-item {
+  padding: 5px;
+  border-radius: 30px;
+  max-width: 300px;
+  border: 0px;
+}
+
+.order-item.image {
+  border-radius: 30px;
+  max-width: 150px;
+  border: 0px;
 }

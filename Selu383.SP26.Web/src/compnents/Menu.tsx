@@ -10,7 +10,7 @@ const Menu = () => {
       <h1>Menu Page</h1>
       <h2>Try our new drinks!</h2>
       <Grid justify="space-between" style={{ padding: 30 }}>
-        <div className="menu-item">
+        <div className="menu-item" id="Decaf">
           <h3>Decaf</h3>
           <div className="menu-item image">
             <Image src={coffee} />
@@ -18,7 +18,7 @@ const Menu = () => {
           </div>
         </div>
 
-        <div className="menu-item">
+        <div className="menu-item" id="GoldenCoffee">
           <h3>Golden Coffee</h3>
           <div className="menu-item image">
             <Image src={goodCoffee} />
@@ -26,7 +26,7 @@ const Menu = () => {
           </div>
         </div>
 
-        <div className="menu-item">
+        <div className="menu-item" id="EvilCoffee">
           <h3>Evil Coffee</h3>
           <div className="menu-item image">
             <Image src={badCoffee} />
