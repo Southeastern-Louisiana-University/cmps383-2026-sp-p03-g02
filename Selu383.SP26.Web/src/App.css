@@ -40,3 +40,34 @@
 .read-the-docs {
   color: #888;
 }
+
+.menu-item {
+  /* padding: 15px; */
+  border-radius: 60px;
+}
+
+.menu-item.image{
+  border-radius: 60px;
+  max-width: 500px;
+  border-color: black;
+  border: 1px solid;
+  transition: all .2s ease-in-out;
+}
+
+.menu-item.image:hover{
+  transform: scale(1.05);
+}
+
+.menu-item.image img{
+  border-radius: 60px;
+}
+
+.menu-item.home {
+  padding: 20px;
+}
+
+.menu-item.home.image {
+  border-radius: 30px;
+  max-width: 300px;
+  border: 0px ;
+}
