@@ -1,20 +1,20 @@
 .nav-link {
   /* padding: 1em; */
-  color: 'inherit';
-  transition: all .3s ease-in;
+  color: "inherit";
+  transition: all 0.3s ease-in;
 }
 
-.nav-link.active{
+.nav-link.active {
   /* padding: 1em; */
-  color: 'inherit';
+  color: "inherit";
   border-radius: 10px;
   border-color: rgba(0, 0, 0);
-  border: 2px solid;  
+  border: 2px solid;
 }
 
-.nav-link :hover{
+.nav-link :hover {
   /* padding: 1em; */
-  color: 'inherit';
+  color: "inherit";
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.2);
 }

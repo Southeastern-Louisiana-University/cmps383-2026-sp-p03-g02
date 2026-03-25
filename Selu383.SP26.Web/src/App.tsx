@@ -8,16 +8,18 @@ import { AppShell, Flex } from "@mantine/core";
 import { useRef } from "react";
 
 import beans from "./assets/beans.jpg";
+import Login from "./compnents/Login.tsx";
 
 function App() {
   const headerRef = useRef<HTMLDivElement>(null);
-
+  
   return (
     <div>
       <AppShell>
         <AppShell.Header
           ref={headerRef}
           style={{
+            width: "75vw",
             display: "grid",
             justifyContent: "center",
             padding: "20px",
@@ -47,12 +49,7 @@ function App() {
             />
             <Route
               path="/login"
-              element={
-                <div>
-                  <h1>Login Page</h1>
-                  <p>Coming soon...</p>
-                </div>
-              }
+              element={<Login />}
             />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

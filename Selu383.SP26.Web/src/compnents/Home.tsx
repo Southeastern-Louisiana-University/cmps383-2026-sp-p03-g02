@@ -3,9 +3,11 @@ import coffee from "../assets/a.jpg";
 import goodCoffee from "../assets/golden coffee.jpg";
 import badCoffee from "../assets/Dark fucked up coffee.jpg";
 import "../App.css";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
+    <div style={{padding: 30}}>
     <Grid justify="center" style={{ padding: 30 }}>
       <Flex justify="space-between" style={{ padding: 30 }}>
         <Grid>
@@ -27,30 +29,46 @@ const Home = () => {
       <Grid justify="space-between" style={{ padding: 30 }}>
         <div className="menu-item home">
           <h3>Decaf</h3>
-          <Image radius="md" className="menu-item home image" src={coffee} />
+
+          <Link
+            to="/menu#Decaf"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Image radius="md" className="menu-item home image" src={coffee} />
+          </Link>
         </div>
         <div className="menu-item home">
           <h3>Golden Coffee</h3>
-          <Image
-            radius="md"
-            w="auto"
-            fit="contain"
-            className="menu-item home image"
-            src={goodCoffee}
-          />
+          <Link
+            to="/menu#GoldenCoffee"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Image
+              radius="md"
+              w="auto"
+              fit="contain"
+              className="menu-item home image"
+              src={goodCoffee}
+            />
+          </Link>
         </div>
         <div className="menu-item home">
           <h3>Evil Coffee</h3>
-          <Image
-            radius="md"
-            w="auto"
-            fit="contain"
-            className="menu-item home image"
-            src={badCoffee}
-          />
+          <Link
+            to="/menu#EvilCoffee"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Image
+              radius="md"
+              w="auto"
+              fit="contain"
+              className="menu-item home image"
+              src={badCoffee}
+            />
+          </Link>
         </div>
       </Grid>
-    </Grid>
+    </Grid></div>
   );
 };
 
