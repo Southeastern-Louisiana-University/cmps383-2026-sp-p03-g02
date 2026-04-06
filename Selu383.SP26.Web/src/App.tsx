@@ -17,9 +17,15 @@ function App() {
   
   return (
     <div>
-      <Navbar />
+      
 
-      <AppShell>
+      <AppShell
+      header={{ height: 70 }}
+      footer={{ height: 100 }}
+    >
+        <AppShell.Header>
+          <Navbar />
+        </AppShell.Header>
         <AppShell.Main>
           <Routes>
             <Route path="/" element={<Home />} />

@@ -1,12 +1,14 @@
-/* .active {
-    background-color: brown
-} */
-
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #785e38
+    background-color: #785e38;
+    position: sticky;
+    top: 0;
+}
+
+nav a:hover {
+    transform: scale(1.1);
 }
 
 nav .title{
@@ -25,6 +27,7 @@ nav .login{
     color: white;
 }
 nav ul {
+    position: center;
     display: flex;
 }
 
