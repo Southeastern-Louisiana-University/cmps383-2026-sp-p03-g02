@@ -1,7 +1,5 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -33,16 +31,16 @@
   }
 }
 
-.card {
+/* .card {
   padding: 2em;
-}
+} */
 
 .read-the-docs {
   color: #888;
 }
 
 .menu-item {
-  /* padding: 15px; */
+  padding: 15px;
   border-radius: 60px;
 }
 

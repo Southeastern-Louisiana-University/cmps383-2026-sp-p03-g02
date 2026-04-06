@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div style={{padding: 30}}>
+    <div>
     <Grid justify="center" style={{ padding: 30 }}>
       <Flex justify="space-between" style={{ padding: 30 }}>
         <Grid>

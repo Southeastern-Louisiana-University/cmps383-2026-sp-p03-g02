@@ -6,7 +6,7 @@ import "../App.css";
 
 const Orders = () => {
   return (
-    <div style={{padding: 30}}>
+    <div>
       <h1>Orders Page</h1>
       <Grid className="order" justify="space-between" style={{ padding: 30 }}>
         <Grid>

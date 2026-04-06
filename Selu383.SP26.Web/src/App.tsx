@@ -1,56 +1,32 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./Navbar.tsx";
-import Home from "./compnents/Home.tsx";
-import Menu from "./compnents/Menu.tsx";
-import Orders from "./compnents/Orders.tsx";
+import Navbar from "./components/Navbar.tsx";
+import Footer from "./components/Footer.tsx";
+import Home from "./pages/Home.tsx";
+import Menu from "./pages/Menu.tsx";
+import Orders from "./pages/Orders.tsx";
+import Reservations from "./pages/Reservations.tsx";
 import "./App.css";
 import { AppShell, Flex } from "@mantine/core";
 import { useRef } from "react";
 
-import beans from "./assets/beans.jpg";
-import Login from "./compnents/Login.tsx";
+// import beans from "./assets/beans.jpg";
+import Login from "./pages/Login.tsx";
 
 function App() {
   const headerRef = useRef<HTMLDivElement>(null);
   
   return (
     <div>
-      <AppShell>
-        <AppShell.Header
-          ref={headerRef}
-          style={{
-            width: "75vw",
-            display: "grid",
-            justifyContent: "center",
-            padding: "20px",
-            position: "relative",
-            backgroundImage: `url(${beans})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            borderRadius: "25px",
-          }}
-        >
-          <Navbar />
-        </AppShell.Header>
+      <Navbar />
 
+      <AppShell>
         <AppShell.Main>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/orders" element={<Orders />} />
-            <Route
-              path="/reservations"
-              element={
-                <div>
-                  <h1>Reservations Page</h1>
-                  <p>Coming soon...</p>
-                </div>
-              }
-            />
-            <Route
-              path="/login"
-              element={<Login />}
-            />
+            <Route path="/reservations" element={<Reservations />} />
+            <Route path="/login" element={<Login />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AppShell.Main>
@@ -67,9 +43,7 @@ function App() {
               justifyContent: "center",
             }}
           >
-            <p style={{ margin: 0 }}>
-              © 2026 Caffeinated Lions. All rights reserved.
-            </p>
+           <Footer/>
           </Flex>
         </AppShell.Footer>
       </AppShell>
