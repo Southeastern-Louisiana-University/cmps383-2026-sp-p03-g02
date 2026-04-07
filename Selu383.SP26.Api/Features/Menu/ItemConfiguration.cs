@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Selu383.SP26.Api.Features.Locations;
+namespace Selu383.SP26.Api.Features.Menu;
 
-public class ItemConfiguration : IEntityTypeConfiguration<Location>
+public class ItemConfiguration : IEntityTypeConfiguration<Item>
 {
-    public void Configure(EntityTypeBuilder<Location> builder)
+    public void Configure(EntityTypeBuilder<Item> builder)
     {
         builder.Property(x => x.Name)
             .IsRequired()

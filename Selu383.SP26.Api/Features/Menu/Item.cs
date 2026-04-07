@@ -1,6 +1,6 @@
 using Selu383.SP26.Api.Features.Auth;
 
-namespace Selu383.SP26.Api.Features.Locations;
+namespace Selu383.SP26.Api.Features.Menu;
 
 public class Item
 {
@@ -13,4 +13,5 @@ public class Item
     public float Price { get; set; }
 
     public bool IsSeasonal { get; set; } = false;
+	public virtual ICollection<ItemIngredient> ItemIngredient { get; set; } = new List<ItemIngredient>();
 }

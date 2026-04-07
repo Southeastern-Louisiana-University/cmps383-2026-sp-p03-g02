@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Selu383.SP26.Api.Features.Locations;
+namespace Selu383.SP26.Api.Features.Menu;
 
-public class IngredientDto
+public class ItemDto
 {
 	public int Id { get; set; }
 
@@ -13,5 +13,8 @@ public class IngredientDto
     [Required]
     public string Type { get; set; } = string.Empty;
 
-    public bool IsAllergen { get; set; } = false;
+	[Required]
+	public float Price { get; set; }
+
+    public bool IsSeasonal { get; set; } = false;
 }

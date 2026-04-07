@@ -1,6 +1,6 @@
 using Selu383.SP26.Api.Features.Auth;
 
-namespace Selu383.SP26.Api.Features.Locations;
+namespace Selu383.SP26.Api.Features.Menu;
 
 public class Ingredient
 {
@@ -11,4 +11,5 @@ public class Ingredient
     public string Type { get; set; } = string.Empty;
 
     public bool IsAllergen { get; set; } = false;
+	public virtual ICollection<ItemIngredient> ItemIngredient { get; set; } = new List<ItemIngredient>();
 }
