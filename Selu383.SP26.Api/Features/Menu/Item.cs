@@ -1,4 +1,5 @@
 using Selu383.SP26.Api.Features.Auth;
+using Selu383.SP26.Api.Features.Orders;
 
 namespace Selu383.SP26.Api.Features.Menu;
 
@@ -14,4 +15,5 @@ public class Item
 
     public bool IsSeasonal { get; set; } = false;
 	public virtual ICollection<ItemIngredient> ItemIngredient { get; set; } = new List<ItemIngredient>();
+	public virtual ICollection<OrderItem> OrderItem { get; set; } = new List<OrderItem>();
 }

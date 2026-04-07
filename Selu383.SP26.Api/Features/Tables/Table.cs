@@ -1,6 +1,6 @@
 using Selu383.SP26.Api.Features.Auth;
 
-namespace Selu383.SP26.Api.Features.Locations;
+namespace Selu383.SP26.Api.Features.Tables;
 
 public class Table
 {

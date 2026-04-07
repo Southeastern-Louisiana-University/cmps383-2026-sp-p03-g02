@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Selu383.SP26.Api.Features.Auth;
+using Selu383.SP26.Api.Features.Menu;
 
-namespace Selu383.SP26.Api.Features.Locations;
+namespace Selu383.SP26.Api.Features.Orders;
 
 public class Order  // Todo: fix user association 
 {
@@ -13,4 +13,5 @@ public class Order  // Todo: fix user association
 	public float Total { get; set; }
 
 	public DateTime CreatedAt { get; set; } = DateTime.Now;
+	public virtual ICollection<OrderItem> OrderItem { get; set; } = new List<OrderItem>();
 }

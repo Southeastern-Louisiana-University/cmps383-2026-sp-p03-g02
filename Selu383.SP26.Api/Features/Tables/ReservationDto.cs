@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Selu383.SP26.Api.Features.Locations;
+namespace Selu383.SP26.Api.Features.Tables;
 
 public class ReservationDto
 {

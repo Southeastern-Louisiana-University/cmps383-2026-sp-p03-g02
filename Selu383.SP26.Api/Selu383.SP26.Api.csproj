@@ -21,9 +21,4 @@
     <ProjectReference Include="..\Selu383.SP26.Web\Selu383.SP26.Web.esproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Ingredients\" />
-    <Folder Include="Features\ItemIngredients\" />
-  </ItemGroup>
-
 </Project>

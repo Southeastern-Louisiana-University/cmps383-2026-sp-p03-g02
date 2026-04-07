@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Selu383.SP26.Api.Features.Auth;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Selu383.SP26.Api.Features.Locations;
+namespace Selu383.SP26.Api.Features.Tables;
 
 public class Reservation
 {
