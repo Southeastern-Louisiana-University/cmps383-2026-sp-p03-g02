@@ -1,4 +1,4 @@
-using Selu383.SP26.Api.Features.Orders;
+using Selu383.SP26.Api.Features.Auth;
 
 namespace Selu383.SP26.Api.Features.Tables;
 
@@ -9,6 +9,4 @@ public class Table
 
 	public bool IsOccupied { get; set; } = false;
 	public bool IsReserved { get; set; } = false;
-	public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }
-

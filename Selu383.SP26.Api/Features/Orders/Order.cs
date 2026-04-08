@@ -1,18 +1,14 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Selu383.SP26.Api.Features.Auth;
 using Selu383.SP26.Api.Features.Menu;
-using Selu383.SP26.Api.Features.Tables;
 
 namespace Selu383.SP26.Api.Features.Orders;
 
-public class Order
+public class Order  // Todo: fix user association 
 {
 	public int Id { get; set; }
-	public virtual required User User { get; set; }
 	public int UserId { get; set; }
 	public int ItemId { get; set; }
 	public int LocationId { get; set; }
-	public virtual required Table Table { get; set; }
 	public int TableId { get; set; }
 	public float Total { get; set; }
 

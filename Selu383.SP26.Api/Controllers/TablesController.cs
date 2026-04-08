@@ -11,98 +11,98 @@ namespace Selu383.SP26.Api.Controllers;
 [ApiController]
 public class TablesController(DataContext dataContext) : ControllerBase
 {
-	[HttpGet]
-	public IQueryable<TableDto> GetAll()
-	{
-		return dataContext.Set<Table>()
-			.Select(x => new TableDto
-			{
-				Id = x.Id,
+    [HttpGet]
+    public IQueryable<TableDto> GetAll()
+    {
+        return dataContext.Set<Table>()
+            .Select(x => new TableDto
+            {
+                Id = x.Id,
 				LocationId = x.LocationId,
 				IsOccupied = x.IsOccupied,
 				IsReserved = x.IsReserved,
 			});
-	}
+    }
 
-	[HttpGet("{id}")]
-	public ActionResult<TableDto> GetById(int id)
-	{
-		var result = dataContext.Set<Table>()
-			.FirstOrDefault(x => x.Id == id);
+    [HttpGet("{id}")]
+    public ActionResult<TableDto> GetById(int id)
+    {
+        var result = dataContext.Set<Table>()
+            .FirstOrDefault(x => x.Id == id);
 
-		if (result == null)
-		{
-			return NotFound();
-		}
+        if (result == null)
+        {
+            return NotFound();
+        }
 
-		return Ok(new TableDto
-		{
+        return Ok(new TableDto
+        {
 			Id = result.Id,
 			LocationId = result.LocationId,
 			IsOccupied = result.IsOccupied,
 			IsReserved = result.IsReserved,
 		});
-	}
+    }
 
-	[HttpPost]
-	[Authorize(Roles = RoleNames.Admin)]
-	public ActionResult<TableDto> Create(TableDto dto)
-	{
+    [HttpPost]
+    [Authorize(Roles = RoleNames.Admin)]
+    public ActionResult<TableDto> Create(TableDto dto)
+    {
 
-		var Table = new Table
-		{
+        var Table = new Table
+        {
 			LocationId = dto.LocationId,
 			IsOccupied = dto.IsOccupied,
 			IsReserved = dto.IsReserved,
 		};
 
-		dataContext.Set<Table>().Add(Table);
-		dataContext.SaveChanges();
+        dataContext.Set<Table>().Add(Table);
+        dataContext.SaveChanges();
 
-		dto.Id = Table.Id;
+        dto.Id = Table.Id;
 
-		return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
-	}
+        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+    }
 
-	[HttpPut("{id}")]
-	[Authorize]
-	public ActionResult<TableDto> Update(int id, TableDto dto)
-	{
+    [HttpPut("{id}")]
+    [Authorize]
+    public ActionResult<TableDto> Update(int id, TableDto dto)
+    {
 
-		var Table = dataContext.Set<Table>()
-			.FirstOrDefault(x => x.Id == id);
+        var Table = dataContext.Set<Table>()
+            .FirstOrDefault(x => x.Id == id);
 
-		if (Table == null)
-		{
-			return NotFound();
-		}
+        if (Table == null)
+        {
+            return NotFound();
+        }
 
-		Table.LocationId = dto.LocationId;
+        Table.LocationId = dto.LocationId;
 		Table.IsOccupied = dto.IsOccupied;
 		Table.IsReserved = dto.IsReserved;
 
-		dataContext.SaveChanges();
+        dataContext.SaveChanges();
 
-		dto.Id = Table.Id;
+        dto.Id = Table.Id;
 
-		return Ok(dto);
-	}
+        return Ok(dto);
+    }
 
-	[HttpDelete("{id}")]
-	[Authorize]
-	public ActionResult Delete(int id)
-	{
-		var Table = dataContext.Set<Table>()
-			.FirstOrDefault(x => x.Id == id);
+    [HttpDelete("{id}")]
+    [Authorize]
+    public ActionResult Delete(int id)
+    {
+        var Table = dataContext.Set<Table>()
+            .FirstOrDefault(x => x.Id == id);
 
-		if (Table == null)
-		{
-			return NotFound();
-		}
+        if (Table == null)
+        {
+            return NotFound();
+        }
 
-		dataContext.Set<Table>().Remove(Table);
-		dataContext.SaveChanges();
+        dataContext.Set<Table>().Remove(Table);
+        dataContext.SaveChanges();
 
-		return Ok();
-	}
+        return Ok();
+    }
 }

@@ -348,10 +348,6 @@ namespace Selu383.SP26.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TableId");
-
-                    b.HasIndex("UserId");
-
                     b.ToTable("Order");
                 });
 
@@ -372,28 +368,6 @@ namespace Selu383.SP26.Api.Migrations
                     b.HasIndex("ItemId");
 
                     b.ToTable("OrderItem");
-                });
-
-            modelBuilder.Entity("Selu383.SP26.Api.Features.Tables.Table", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsOccupied")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsReserved")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Table");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -479,25 +453,6 @@ namespace Selu383.SP26.Api.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("Selu383.SP26.Api.Features.Orders.Order", b =>
-                {
-                    b.HasOne("Selu383.SP26.Api.Features.Tables.Table", "Table")
-                        .WithMany("Orders")
-                        .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Selu383.SP26.Api.Features.Auth.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Table");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Selu383.SP26.Api.Features.Orders.OrderItem", b =>
                 {
                     b.HasOne("Selu383.SP26.Api.Features.Menu.Item", "Item")
@@ -524,8 +479,6 @@ namespace Selu383.SP26.Api.Migrations
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Auth.User", b =>
                 {
-                    b.Navigation("Orders");
-
                     b.Navigation("UserRoles");
                 });
 
@@ -544,11 +497,6 @@ namespace Selu383.SP26.Api.Migrations
             modelBuilder.Entity("Selu383.SP26.Api.Features.Orders.Order", b =>
                 {
                     b.Navigation("OrderItem");
-                });
-
-            modelBuilder.Entity("Selu383.SP26.Api.Features.Tables.Table", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,61 +11,61 @@ namespace Selu383.SP26.Api.Controllers;
 [Route("api/authentication")]
 public class AuthenticationController : ControllerBase
 {
-	private readonly SignInManager<User> signInManager;
-	private readonly UserManager<User> userManager;
+    private readonly SignInManager<User> signInManager;
+    private readonly UserManager<User> userManager;
 
-	public AuthenticationController(
-		SignInManager<User> signInManager,
-		UserManager<User> userManager)
-	{
-		this.signInManager = signInManager;
-		this.userManager = userManager;
-	}
+    public AuthenticationController(
+        SignInManager<User> signInManager,
+        UserManager<User> userManager)
+    {
+        this.signInManager = signInManager;
+        this.userManager = userManager;
+    }
 
-	[HttpGet("me")]
-	[Authorize]
-	public async Task<ActionResult<UserDto>> Me()
-	{
-		var username = User.GetCurrentUserName();
-		var resultDto = await GetUserDto(userManager.Users).SingleAsync(x => x.UserName == username);
-		return Ok(resultDto);
-	}
+    [HttpGet("me")]
+    [Authorize]
+    public async Task<ActionResult<UserDto>> Me()
+    {
+        var username = User.GetCurrentUserName();
+        var resultDto = await GetUserDto(userManager.Users).SingleAsync(x => x.UserName == username);
+        return Ok(resultDto);
+    }
 
-	[HttpPost("login")]
-	public async Task<ActionResult<UserDto>> Login(LoginDto dto)
-	{
-		var user = await userManager.FindByNameAsync(dto.UserName);
-		if (user == null)
-		{
-			return BadRequest();
-		}
-		var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password, true);
-		if (!result.Succeeded)
-		{
-			return BadRequest();
-		}
+    [HttpPost("login")]
+    public async Task<ActionResult<UserDto>> Login(LoginDto dto)
+    {
+        var user = await userManager.FindByNameAsync(dto.UserName);
+        if (user == null)
+        {
+            return BadRequest();
+        }
+        var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password, true);
+        if (!result.Succeeded)
+        {
+            return BadRequest();
+        }
 
-		await signInManager.SignInAsync(user, false);
+        await signInManager.SignInAsync(user, false);
 
-		var resultDto = await GetUserDto(userManager.Users).SingleAsync(x => x.UserName == user.UserName);
-		return Ok(resultDto);
-	}
+        var resultDto = await GetUserDto(userManager.Users).SingleAsync(x => x.UserName == user.UserName);
+        return Ok(resultDto);
+    }
 
-	[HttpPost("logout")]
-	[Authorize]
-	public async Task<ActionResult> Logout()
-	{
-		await signInManager.SignOutAsync();
-		return Ok();
-	}
+    [HttpPost("logout")]
+    [Authorize]
+    public async Task<ActionResult> Logout()
+    {
+        await signInManager.SignOutAsync();
+        return Ok();
+    }
 
-	private static IQueryable<UserDto> GetUserDto(IQueryable<User> users)
-	{
-		return users.Select(x => new UserDto
-		{
-			Id = x.Id,
-			UserName = x.UserName!,
-			Roles = x.UserRoles.Select(y => y.Role!.Name).ToArray()!
-		});
-	}
+    private static IQueryable<UserDto> GetUserDto(IQueryable<User> users)
+    {
+        return users.Select(x => new UserDto
+        {
+            Id = x.Id,
+            UserName = x.UserName!,
+            Roles = x.UserRoles.Select(y => y.Role!.Name).ToArray()!
+        });
+    }
 }

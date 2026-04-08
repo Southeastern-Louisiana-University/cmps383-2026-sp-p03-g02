@@ -10,109 +10,106 @@ namespace Selu383.SP26.Api.Controllers;
 [ApiController]
 public class OrdersController(DataContext dataContext) : ControllerBase
 {
-	[HttpGet]
-	public IQueryable<OrderDto> GetAll()
-	{
-		return dataContext.Set<Order>()
-			.Select(x => new OrderDto
-			{
-				Id = x.Id,
-				User = x.User,
-				Table = x.Table,
+    [HttpGet]
+    public IQueryable<OrderDto> GetAll()
+    {
+        return dataContext.Set<Order>()
+            .Select(x => new OrderDto
+            {
+                Id = x.Id,
 				UserId = x.UserId,
+				ItemId = x.ItemId,
 				LocationId = x.LocationId,
 				TableId = x.TableId,
 				Total = x.Total,
 			});
-	}
+    }
 
-	[HttpGet("{id}")]
-	public ActionResult<OrderDto> GetById(int id)
-	{
-		var result = dataContext.Set<Order>()
-			.FirstOrDefault(x => x.Id == id);
+    [HttpGet("{id}")]
+    public ActionResult<OrderDto> GetById(int id)
+    {
+        var result = dataContext.Set<Order>()
+            .FirstOrDefault(x => x.Id == id);
 
-		if (result == null)
-		{
-			return NotFound();
-		}
+        if (result == null)
+        {
+            return NotFound();
+        }
 
-		return Ok(new OrderDto
-		{
+        return Ok(new OrderDto
+        {
 			Id = result.Id,
 			UserId = result.UserId,
-			User = result.User,
-			Table = result.Table,
+			ItemId = result.ItemId,
 			LocationId = result.LocationId,
 			TableId = result.TableId,
 			Total = result.Total,
 		});
-	}
+    }
 
-	[HttpPost]
-	[Authorize(Roles = RoleNames.Admin)]
-	public ActionResult<OrderDto> Create(OrderDto dto)
-	{
+    [HttpPost]
+    [Authorize(Roles = RoleNames.Admin)]
+    public ActionResult<OrderDto> Create(OrderDto dto)
+    {
 
-		var Order = new Order
-		{
+        var Order = new Order
+        {
 			UserId = dto.UserId,
-			User = dto.User,
-			Table = dto.Table,
+			ItemId = dto.ItemId,
 			LocationId = dto.LocationId,
 			TableId = dto.TableId,
 			Total = dto.Total,
 		};
 
-		dataContext.Set<Order>().Add(Order);
-		dataContext.SaveChanges();
+        dataContext.Set<Order>().Add(Order);
+        dataContext.SaveChanges();
 
-		dto.Id = Order.Id;
+        dto.Id = Order.Id;
 
-		return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
-	}
+        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+    }
 
-	[HttpPut("{id}")]
-	[Authorize]
-	public ActionResult<OrderDto> Update(int id, OrderDto dto)
-	{
+    [HttpPut("{id}")]
+    [Authorize]
+    public ActionResult<OrderDto> Update(int id, OrderDto dto)
+    {
 
-		var Order = dataContext.Set<Order>()
-			.FirstOrDefault(x => x.Id == id);
+        var Order = dataContext.Set<Order>()
+            .FirstOrDefault(x => x.Id == id);
 
-		if (Order == null)
-		{
-			return NotFound();
-		}
+        if (Order == null)
+        {
+            return NotFound();
+        }
 
 		Order.UserId = dto.UserId;
+		Order.ItemId = dto.ItemId;
 		Order.LocationId = dto.LocationId;
-		Order.Table = dto.Table;
 		Order.TableId = dto.TableId;
-		Order.Total = dto.Total;
+        Order.Total = dto.Total;
 
-		dataContext.SaveChanges();
+        dataContext.SaveChanges();
 
-		dto.Id = Order.Id;
+        dto.Id = Order.Id;
 
-		return Ok(dto);
-	}
+        return Ok(dto);
+    }
 
-	[HttpDelete("{id}")]
-	[Authorize]
-	public ActionResult Delete(int id)
-	{
-		var Order = dataContext.Set<Order>()
-			.FirstOrDefault(x => x.Id == id);
+    [HttpDelete("{id}")]
+    [Authorize]
+    public ActionResult Delete(int id)
+    {
+        var Order = dataContext.Set<Order>()
+            .FirstOrDefault(x => x.Id == id);
 
-		if (Order == null)
-		{
-			return NotFound();
-		}
+        if (Order == null)
+        {
+            return NotFound();
+        }
 
-		dataContext.Set<Order>().Remove(Order);
-		dataContext.SaveChanges();
+        dataContext.Set<Order>().Remove(Order);
+        dataContext.SaveChanges();
 
-		return Ok();
-	}
+        return Ok();
+    }
 }
