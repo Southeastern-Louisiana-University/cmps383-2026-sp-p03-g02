@@ -12,7 +12,7 @@ using Selu383.SP26.Api.Data;
 namespace Selu383.SP26.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260408160356_AddTablesAndOrders")]
+    [Migration("20260408171457_AddTablesAndOrders")]
     partial class AddTablesAndOrders
     {
         /// <inheritdoc />
