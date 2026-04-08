@@ -302,7 +302,7 @@ namespace Selu383.SP26.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Item");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Menu.ItemIngredient", b =>
@@ -352,7 +352,7 @@ namespace Selu383.SP26.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Orders.OrderItem", b =>
@@ -371,7 +371,7 @@ namespace Selu383.SP26.Api.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Tables.Table", b =>
@@ -393,7 +393,7 @@ namespace Selu383.SP26.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Table");
+                    b.ToTable("Tables");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
