@@ -14,7 +14,7 @@ public class ItemDto
     public string Type { get; set; } = string.Empty;
 
 	[Required]
-	public float Price { get; set; }
+	public decimal Price { get; set; }
 
     public bool IsSeasonal { get; set; } = false;
 }

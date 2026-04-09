@@ -30,7 +30,7 @@ public class UsersController : ControllerBase
 		var createResult = await userManager.CreateAsync(newUser, dto.Password);
 		if (!createResult.Succeeded)
 		{
-			return BadRequest();
+			return BadRequest("Could not create user");
 		}
 
 		try
@@ -38,7 +38,7 @@ public class UsersController : ControllerBase
 			var roleResult = await userManager.AddToRolesAsync(newUser, dto.Roles);
 			if (!roleResult.Succeeded)
 			{
-				return BadRequest();
+				return BadRequest("Invalid role");
 			}
 		}
 		catch (InvalidOperationException e) when(e.Message.StartsWith("Role") && e.Message.EndsWith("does not exist."))

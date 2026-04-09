@@ -7,16 +7,10 @@ namespace Selu383.SP26.Api.Features.Orders;
 public class OrderDto
 {
 	public int Id { get; set; }
-
-	public virtual required User User { get; set; }
 	public int UserId { get; set; }
-
 	public int LocationId { get; set; }
-
-	public virtual required Table Table { get; set; }
 	public int TableId { get; set; }
-
-	public float Total { get; set; }
+	public decimal Total { get; set; }
 
 	[Column("created_at")]
 	public DateTime CreatedAt { get; set; } = DateTime.Now;

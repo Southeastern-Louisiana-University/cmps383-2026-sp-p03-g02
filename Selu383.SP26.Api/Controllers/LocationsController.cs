@@ -53,7 +53,7 @@ public class LocationsController(DataContext dataContext) : ControllerBase
 	{
 		if (dto.TableCount < 1)
 		{
-			return BadRequest();
+			return BadRequest("TableCount cannot be less than 1");
 		}
 
 		var location = new Location

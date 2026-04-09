@@ -6,8 +6,13 @@ namespace Selu383.SP26.Api.Features.Orders;
 
 public class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
-    public void Configure(EntityTypeBuilder<Order> builder)
+	public void Configure(EntityTypeBuilder<Order> builder)
 	{
-
-    }
+		builder
+			.HasMany(x => x.OrderItem)
+			.WithOne()
+			.HasForeignKey(oi => oi.OrderId)
+			.IsRequired()
+			.OnDelete(DeleteBehavior.Cascade);
+	}
 }

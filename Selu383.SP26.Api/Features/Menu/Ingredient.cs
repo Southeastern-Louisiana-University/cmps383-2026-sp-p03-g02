@@ -11,5 +11,4 @@ public class Ingredient
     public string Type { get; set; } = string.Empty;
 
     public bool IsAllergen { get; set; } = false;
-	public virtual ICollection<ItemIngredient> ItemIngredient { get; set; } = new List<ItemIngredient>();
 }

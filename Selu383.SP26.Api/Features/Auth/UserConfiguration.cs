@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Selu383.SP26.Api.Features.Orders;
 
 namespace Selu383.SP26.Api.Features.Auth;
 
@@ -8,9 +9,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 	public void Configure(EntityTypeBuilder<User> builder)
 	{
 		builder
-			.HasMany(e => e.Orders)
-			.WithOne(e => e.User)
-			.HasForeignKey(e => e.UserId)
-			.IsRequired();
+			.HasMany(x => x.Orders)
+			.WithOne()
+			.HasForeignKey(o => o.UserId)
+			.IsRequired()
+			.OnDelete(DeleteBehavior.Cascade);
 	}
 }

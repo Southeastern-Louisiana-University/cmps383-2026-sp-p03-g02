@@ -11,9 +11,8 @@ public class Item
 
     public string Type { get; set; } = string.Empty;
 
-    public float Price { get; set; }
+    public decimal Price { get; set; }
 
     public bool IsSeasonal { get; set; } = false;
-	public virtual ICollection<ItemIngredient> ItemIngredient { get; set; } = new List<ItemIngredient>();
-	public virtual ICollection<OrderItem> OrderItem { get; set; } = new List<OrderItem>();
+	public virtual ICollection<ItemIngredient> ItemIngredients { get; set; } = new List<ItemIngredient>();
 }
