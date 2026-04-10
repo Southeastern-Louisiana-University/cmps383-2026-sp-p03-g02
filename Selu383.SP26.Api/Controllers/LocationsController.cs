@@ -59,7 +59,7 @@ public class LocationsController(DataContext dataContext) : ControllerBase
 		var location = new Location
 		{
 			Name = dto.Name,
-			Address = dto.Address,
+ 			Address = dto.Address,
 			TableCount = dto.TableCount,
 			ManagerId = dto.ManagerId
 		};

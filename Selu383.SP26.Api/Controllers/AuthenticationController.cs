@@ -28,6 +28,9 @@ public class AuthenticationController : ControllerBase
 	{
 		var username = User.GetCurrentUserName();
 		var resultDto = await GetUserDto(userManager.Users).SingleAsync(x => x.UserName == username);
+		if (resultDto == null){
+			return BadRequest("You are not logged in");
+		}
 		return Ok(resultDto);
 	}
 

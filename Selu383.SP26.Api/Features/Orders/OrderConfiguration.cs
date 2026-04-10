@@ -14,5 +14,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 			.HasForeignKey(oi => oi.OrderId)
 			.IsRequired()
 			.OnDelete(DeleteBehavior.Cascade);
+
+		builder.Property(e => e.Total)
+			.HasColumnType("decimal(18,2)")
+			.HasPrecision(18, 2)
+			.IsRequired();
 	}
 }

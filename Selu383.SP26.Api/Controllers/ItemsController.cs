@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Selu383.SP26.Api.Data;
 using Selu383.SP26.Api.Features.Auth;
 using Selu383.SP26.Api.Features.Menu;
@@ -11,21 +12,24 @@ namespace Selu383.SP26.Api.Controllers;
 public class ItemsController(DataContext dataContext) : ControllerBase
 {
 	[HttpGet]
-	public IQueryable<ItemDto> GetAll()
+	public IQueryable<Item> GetAll()
 	{
 		return dataContext.Set<Item>()
-			.Select(x => new ItemDto
+			.Include(x => x.ItemIngredients)
+				.ThenInclude(ii => ii.Ingredient)
+			.Select(x => new Item
 			{
 				Id = x.Id,
 				Name = x.Name,
 				Type = x.Type,
 				Price = x.Price,
 				IsSeasonal = x.IsSeasonal,
+				ItemIngredients = x.ItemIngredients,
 			});
 	}
 
 	[HttpGet("{id}")]
-	public ActionResult<ItemDto> GetById(int id)
+	public ActionResult<Item> GetById(int id)
 	{
 		var result = dataContext.Set<Item>()
 			.FirstOrDefault(x => x.Id == id);
@@ -35,13 +39,14 @@ public class ItemsController(DataContext dataContext) : ControllerBase
 			return NotFound();
 		}
 
-		return Ok(new ItemDto
+		return Ok(new Item
 		{
 			Id = result.Id,
 			Name = result.Name,
 			Type = result.Type,
 			Price = result.Price,
 			IsSeasonal = result.IsSeasonal,
+			ItemIngredients = result.ItemIngredients,
 		});
 	}
 
@@ -55,7 +60,7 @@ public class ItemsController(DataContext dataContext) : ControllerBase
 			Name = dto.Name,
 			Type = dto.Type,
 			Price = dto.Price,
-			IsSeasonal = dto.IsSeasonal,
+			IsSeasonal = dto.IsSeasonal
 		};
 
 		dataContext.Set<Item>().Add(Item);

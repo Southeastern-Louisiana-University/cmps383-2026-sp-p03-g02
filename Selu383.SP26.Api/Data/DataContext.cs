@@ -18,10 +18,13 @@ public class DataContext : IdentityDbContext<User, Role, int, IdentityUserClaim<
 	}
 
 	public DbSet<Location> Locations { get; set; }
+	public DbSet<Item> Items { get; set; }
+	public DbSet<Ingredient> Ingredients { get; set; }
+	public DbSet<ItemIngredient> ItemIngredients { get; set; }
 	public DbSet<Order> Orders { get; set; }
 	public DbSet<OrderItem> OrderItems { get; set; }
 	public DbSet<Table> Tables { get; set; }
-	public DbSet<Item> Items { get; set; }
+	public DbSet<Reservation> Reservations { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

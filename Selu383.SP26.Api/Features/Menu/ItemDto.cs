@@ -17,4 +17,5 @@ public class ItemDto
 	public decimal Price { get; set; }
 
     public bool IsSeasonal { get; set; } = false;
+	//public virtual ICollection<ItemIngredient> ItemIngredients { get; set; } = new List<ItemIngredient>();
 }

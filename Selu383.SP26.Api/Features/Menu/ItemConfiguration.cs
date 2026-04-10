@@ -17,5 +17,10 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
 			.HasForeignKey(i => i.ItemId)
 			.IsRequired()
 			.OnDelete(DeleteBehavior.Cascade);
+
+		builder.Property(e => e.Price)
+			.HasColumnType("decimal(18,2)")
+			.HasPrecision(18, 2)
+			.IsRequired();
 	}
 }
