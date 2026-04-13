@@ -5,6 +5,7 @@ import Home from "./pages/Home.tsx";
 import Menu from "./pages/Menu.tsx";
 import Orders from "./pages/Orders.tsx";
 import Reservations from "./pages/Reservations.tsx";
+import Cart from "./pages/Cart.tsx"
 import "./App.css";
 import { AppShell, Flex } from "@mantine/core";
 import { useRef } from "react";
@@ -33,6 +34,7 @@ function App() {
             <Route path="/orders" element={<Orders />} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AppShell.Main>
