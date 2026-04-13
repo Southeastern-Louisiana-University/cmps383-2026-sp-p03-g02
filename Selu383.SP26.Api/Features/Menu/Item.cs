@@ -11,8 +11,12 @@ public class Item
 
     public string Type { get; set; } = string.Empty;
 
+    public string Description { get; set; } = string.Empty;
+
     public decimal Price { get; set; }
 
     public bool IsSeasonal { get; set; } = false;
+
+    public string Image { get; set; } = string.Empty;
 	public virtual ICollection<ItemIngredient> ItemIngredients { get; set; } = new List<ItemIngredient>();
 }

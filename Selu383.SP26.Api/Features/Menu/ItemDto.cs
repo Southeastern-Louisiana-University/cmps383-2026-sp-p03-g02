@@ -13,9 +13,13 @@ public class ItemDto
     [Required]
     public string Type { get; set; } = string.Empty;
 
-	[Required]
+    public string Description { get; set; } = string.Empty;
+
+    [Required]
 	public decimal Price { get; set; }
 
     public bool IsSeasonal { get; set; } = false;
-	//public virtual ICollection<ItemIngredient> ItemIngredients { get; set; } = new List<ItemIngredient>();
+
+    public string Image { get; set; } = string.Empty;
+    //public virtual ICollection<ItemIngredient> ItemIngredients { get; set; } = new List<ItemIngredient>();
 }

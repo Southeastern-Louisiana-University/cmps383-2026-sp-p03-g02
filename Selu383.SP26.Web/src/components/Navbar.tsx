@@ -7,13 +7,17 @@ import "./Navbar.css"
 const Navbar = () => {
     return (
         <nav>
-            <Link to="/" className="title">Caffeinated Lions</Link>
+            <div className="left">
+                <Link to="/" className="title">Caffeinated Lions</Link>
+            </div>
             <ul>
                 <li><NavLink to="/menu">Menu</NavLink></li>
                 <li><NavLink to="/orders">Orders</NavLink></li>
                 <li><NavLink to="reservations">Reservations</NavLink></li>
             </ul>
-            <NavLink to="/login" className="login">Login</NavLink>
+            <div className="right">
+                <NavLink to="/login" className="login">Login</NavLink>
+            </div>
         </nav>
     )
 };
