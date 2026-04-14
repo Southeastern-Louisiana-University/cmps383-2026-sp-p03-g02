@@ -1,74 +1,77 @@
-import { Flex, Grid, Image } from "@mantine/core";
-import coffee from "../assets/a.jpg";
-import goodCoffee from "../assets/golden coffee.jpg";
-import badCoffee from "../assets/Dark fucked up coffee.jpg";
+import { Flex, Container, Image, Text, SimpleGrid, Box, AspectRatio, Title } from "@mantine/core";
 import "../App.css";
 import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import Autoplay from "embla-carousel-autoplay";
+import { Carousel } from "@mantine/carousel";
 
 const Home = () => {
+
+  const [items, setItems] = useState([]);
+  const autoplay = useRef(Autoplay({delay: 5000}));
+  
+
+  useEffect(() => {
+    fetch("/api/items")
+    .then((res) => res.json())
+    .then((res) => {
+    setItems(res)
+    });
+}, [])
+  
   return (
-    <div>
-    <Grid justify="center" style={{ padding: 30 }}>
-      <Flex justify="space-between" style={{ padding: 30 }}>
-        <Grid>
+    
+    <Container size="lg">
+      <Flex></Flex>
+      <SimpleGrid cols={2} spacing="xl" mt="xl">
+
+        <Box>
           <h1>Caffeinated Lions</h1>
-          <p
-            style={{ maxWidth: "600px", fontSize: "1.2rem", textAlign: "left" }}
-          >
-            Welcome to Caffeinated Lions, your go-to spot for the best coffee in
-            town! .........
-          </p>
-        </Grid>
-
-        <div style={{ padding: 20 }}>
-          <Image radius="md" w="auto" fit="contain" src={coffee} />
-        </div>
-      </Flex>
-
-      <h2>Try our new drinks!</h2>
-      <Grid justify="space-between" style={{ padding: 30 }}>
-        <div className="menu-item home">
-          <h3>Decaf</h3>
-
-          <Link
-            to="/menu#Decaf"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <Image radius="md" className="menu-item home image" src={coffee} />
-          </Link>
-        </div>
-        <div className="menu-item home">
-          <h3>Golden Coffee</h3>
-          <Link
-            to="/menu#GoldenCoffee"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <Image
+          <Title order={2} size="h4">Welcome to Caffeinated Lions, your go-to spot for the best coffee in town!</Title>
+        </Box>
+        <Box pos="relative">
+            <Image 
               radius="md"
-              w="auto"
-              fit="contain"
-              className="menu-item home image"
-              src={goodCoffee}
+              // fit="contain"
+              // h={200}
+              // w="auto"
+              src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.HUVnLSmPwNKr4YM64h5V0QHaE8%3Fpid%3DApi&f=1&ipt=2a07171075bd07c0db76357baf68480ecfbf4729615354dc886101e87783ed04&ipo=images"
             />
-          </Link>
-        </div>
-        <div className="menu-item home">
-          <h3>Evil Coffee</h3>
-          <Link
-            to="/menu#EvilCoffee"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <Image
-              radius="md"
-              w="auto"
-              fit="contain"
-              className="menu-item home image"
-              src={badCoffee}
-            />
-          </Link>
-        </div>
-      </Grid>
-    </Grid></div>
+          </Box>
+      </SimpleGrid>
+
+      <h1>Try Some Of Our New Menu Items</h1>
+
+      <Carousel
+        withIndicators
+        height={200}
+        plugins={[autoplay.current]}
+        onMouseEnter={autoplay.current.stop}
+        onMouseLeave={() => autoplay.current.play()}
+        loop
+        slideGap="md"
+
+      >
+        {items.map((item) => (
+          <Carousel.Slide key={item.id}>
+            <SimpleGrid cols={2}>
+            <Box>
+              <Title>{item.name}</Title>
+              <Text size="sm">{item.description}</Text>
+            </Box>
+            <Box>
+              <Image
+                src={item.image}
+                height={200}
+                fit="contain"
+                radius="md"
+              />
+            </Box>
+            </SimpleGrid>
+          </Carousel.Slide>
+        ))}
+      </Carousel>
+    </Container>
   );
 };
 

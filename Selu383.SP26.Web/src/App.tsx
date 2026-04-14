@@ -8,6 +8,7 @@ import Reservations from "./pages/Reservations.tsx";
 import Cart from "./pages/Cart.tsx"
 import "./App.css";
 import { AppShell, Flex } from "@mantine/core";
+import '@mantine/carousel/styles.css';
 import { useRef } from "react";
 
 // import beans from "./assets/beans.jpg";
