@@ -9,14 +9,14 @@ import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Fonts } from '@/constants/theme';
 
-export default function TabTwoScreen() {
+export default function OrderScreen() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#ffbb00', dark: '#00ffff' }}
+      headerBackgroundColor={{ light: '#f10909', dark: '#00d6d6' }}
       headerImage={
         <IconSymbol
           size={100}
-          color="#92ff04"
+          color="#bd0000"
           name="chevron.left.forwardslash.chevron.right"
           style={styles.headerImage}
         />
@@ -100,13 +100,13 @@ export default function TabTwoScreen() {
 
 const styles = StyleSheet.create({
   headerImage: {
-    color: '#808080',
-    bottom: -90,
+    color: '#ce1515',
+    bottom: -30,
     left: -35,
     position: 'absolute',
   },
   titleContainer: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 3,
   },
 });
