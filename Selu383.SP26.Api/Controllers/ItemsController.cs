@@ -22,9 +22,11 @@ public class ItemsController(DataContext dataContext) : ControllerBase
 				Id = x.Id,
 				Name = x.Name,
 				Type = x.Type,
-				Price = x.Price,
+				Description = x.Description,
+                Price = x.Price,
 				IsSeasonal = x.IsSeasonal,
-				ItemIngredients = x.ItemIngredients,
+				Image = x.Image,
+                ItemIngredients = x.ItemIngredients,
 			});
 	}
 
@@ -44,9 +46,11 @@ public class ItemsController(DataContext dataContext) : ControllerBase
 			Id = result.Id,
 			Name = result.Name,
 			Type = result.Type,
+			Description = result.Description,
 			Price = result.Price,
 			IsSeasonal = result.IsSeasonal,
-			ItemIngredients = result.ItemIngredients,
+			Image = result.Image,
+            ItemIngredients = result.ItemIngredients,
 		});
 	}
 
@@ -59,8 +63,10 @@ public class ItemsController(DataContext dataContext) : ControllerBase
 		{
 			Name = dto.Name,
 			Type = dto.Type,
+			Description = dto.Description,
 			Price = dto.Price,
-			IsSeasonal = dto.IsSeasonal
+			IsSeasonal = dto.IsSeasonal,
+			Image = dto.Image,
 		};
 
 		dataContext.Set<Item>().Add(Item);
@@ -86,8 +92,10 @@ public class ItemsController(DataContext dataContext) : ControllerBase
 
 		Item.Name = dto.Name;
 		Item.Type = dto.Type;
-		Item.Price = dto.Price;
+		Item.Description = dto.Description;
+        Item.Price = dto.Price;
 		Item.IsSeasonal = dto.IsSeasonal;
+		Item.Image = dto.Image;
 
 		dataContext.SaveChanges();
 
