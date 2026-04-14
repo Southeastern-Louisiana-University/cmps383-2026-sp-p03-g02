@@ -5,7 +5,7 @@ import Home from "./pages/Home.tsx";
 import Menu from "./pages/Menu.tsx";
 import Orders from "./pages/Orders.tsx";
 import Reservations from "./pages/Reservations.tsx";
-import Cart from "./pages/Cart.tsx"
+import Cart from "./pages/Cart.tsx";
 import "./App.css";
 import { AppShell, Flex } from "@mantine/core";
 import { useRef } from "react";
@@ -15,19 +15,14 @@ import Login from "./pages/Login.tsx";
 
 function App() {
   const headerRef = useRef<HTMLDivElement>(null);
-  
+
   return (
     <div>
-      
-
-      <AppShell
-      header={{ height: 70 }}
-      footer={{ height: 100 }}
-    >
-        <AppShell.Header>
+      <AppShell header={{ height: 70 }} footer={{ height: 100 }}>
+        {/* <AppShell.Header> */}
           <Navbar />
-        </AppShell.Header>
-        <AppShell.Main>
+        {/* </AppShell.Header> */}
+        <AppShell.Main style={{paddingLeft: 100, paddingRight: 100}}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/menu" element={<Menu />} />
@@ -51,7 +46,7 @@ function App() {
               justifyContent: "center",
             }}
           >
-           <Footer/>
+            <Footer />
           </Flex>
         </AppShell.Footer>
       </AppShell>

@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import { Card, Image, Text, Badge, Button, Group, SimpleGrid, AspectRatio, Box, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import "../App.css";
 
 const Menu = () => {
 
