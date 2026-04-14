@@ -6,6 +6,7 @@ const Menu = () => {
 
   const [items, setItems] = useState([]);
   const [ingredients, setIngredients] = useState([]);
+  const [selectedType, setSelectedType] = useState("All");
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -21,6 +22,13 @@ const Menu = () => {
     setSelectedItem(item);
     open();
   }
+
+  const types = ["All", ...new Set(items.map(item => item.type))];
+
+  const filteredItems =
+  selectedType === "All"
+    ? items
+    : items.filter(item => item.type === selectedType);
 
   useEffect(() => {
     fetch("/api/items")
@@ -38,36 +46,32 @@ const Menu = () => {
 
   return (
     <div>
-      <h1>Ingredients</h1>
-      ingredients: {JSON.stringify(ingredients, null, 4)}
+      {/* <h1>Ingredients</h1>
+      ingredients: {JSON.stringify(ingredients, null, 4)} */}
 
       <h1>Menu Page</h1>
-      <h2>Try our new drinks!</h2>
+      {/* <h2>Try our new drinks!</h2> */}
 
-      <Modal opened={opened} onClose={close} title="Make Selection" centered>
+      {/* <Modal opened={opened} onClose={close} title="Make Selection" centered>
         {ingredients.map((ingredient) => {
           return (
             <Text key={ingredient.id}>{ingredient.name}</Text>
           )
         })}
-      </Modal>
-
+      </Modal> */}
+      <Group mb="md">
+        {types.map((type) => (
+          <Button
+            key={type}
+            variant={selectedType === type ? "filled" : "light"}
+            onClick={() => setSelectedType(type)}
+          >
+            {type}
+          </Button>
+        ))}
+      </Group>
       <SimpleGrid cols={4}>
-
-      {/* {ingredients.map((ingredient) => {
-        return (
-          <Card shadow="sm" padding="lg" withBorder>
-            <Card.Section>
-              <h1>{ingredient.name}</h1>
-            </Card.Section>
-            <Group justify="center">
-              <Text>idk write a desciption or something</Text>
-            </Group>
-          </Card>
-        )
-      })} */}
-
-      {items.map((item) => {
+      {filteredItems.map((item) => {
         return (
           <Card shadow="sm" padding="lg" radius="md" withBorder m="sm" p="md">
             <Card.Section>
@@ -104,7 +108,7 @@ const Menu = () => {
             </Text>
 
             <Button color="green" fullWidth mt="md" onClick={() => openModal(item)}>
-              Open Modal
+              Add to Cart
             </Button>
           </Card>
         )
