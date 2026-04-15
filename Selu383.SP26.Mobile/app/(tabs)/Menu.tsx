@@ -17,7 +17,7 @@ export default function HomeScreen() {
       >
 
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="subtitle">Orders Page!</ThemedText>
+        <ThemedText type="subtitle">Menu Page!</ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.fullCat}>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f7ead3',
     borderRadius: 15,
     padding: 10,
-    width: 'auto',
+    width: 150,
   },
   cardImage: {
     width: 110,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   fullCat: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 10,
     padding: 10,

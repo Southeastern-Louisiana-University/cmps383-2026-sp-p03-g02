@@ -87,8 +87,10 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     position: 'absolute',
-    bottom: 20,
-    left: 20,
+    bottom: 5,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
     color: '#ffff',
   }
 });
