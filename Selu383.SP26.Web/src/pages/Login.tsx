@@ -39,7 +39,7 @@ const Login = ({ setCurrentUser }: LoginProps) => {
       if (response.ok) {
         const data: CurrentUser = await response.json();
         setCurrentUser(data);
-        navigate("/menu");
+        navigate("/");
       } else {
         setError("Invalid username or password.");
       }
