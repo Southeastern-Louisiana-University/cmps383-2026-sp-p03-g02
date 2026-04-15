@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Selu383.SP26.Api.Features.Auth;
 using Selu383.SP26.Api.Features.Locations;
 using Selu383.SP26.Api.Features.Menu;
+using Selu383.SP26.Api.Features.Tables;
 
 namespace Selu383.SP26.Api.Data;
 
@@ -16,8 +17,8 @@ public static class SeedHelper
 
 		await AddRoles(serviceProvider);
 		await AddUsers(serviceProvider);
-
-		await AddLocations(dataContext);
+		await AddTables(dataContext);
+        await AddLocations(dataContext);
 		await AddItems(dataContext);
 		await AddIngredients(dataContext);
 		await AddItemIngredients(dataContext);
@@ -95,9 +96,12 @@ public static class SeedHelper
 		}
 
 		dataContext.Set<Item>().AddRange(
-		new Item { Name = "Decaf", Type = "Coffee", IsSeasonal = false },
-		new Item { Name = "Golden Coffee", Type = "Coffee", IsSeasonal = true }
-		);
+		new Item { Name = "Iced Latte", Type = "Coffee", IsSeasonal = false, Price = 5500, Description = "Espresso and milk served over ice for a refreshing coffee drink.", Image = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.freepik.com%2Fpremium-photo%2Ficed-coffee-latte-takeaway-cup-isolated-white-background_871222-1517.jpg%3Fw%3D2000&f=1&nofb=1&ipt=cc763f93ee226d9f9160a488d043951627798186272e5ea2fcb875e3ef67c046" },
+		new Item { Name = "Roaring Frappe", Type = "Coffee", IsSeasonal = true, Price = 6200, Description = "Cold brew, milk, and ice blended together with a signature syrup or flavor, topped with whipped cream.", Image = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcoffeemaister.com%2Fwp-content%2Fuploads%2F2024%2F12%2FIced-Mocha-Frappe-3rd-Photo.webp&f=1&nofb=1&ipt=759c2528bd79b21d04b5105d0f097ae02f68dc2d5b96d2959e15cc0a60fe5f10" },
+		new Item { Name = "Mannino Honey Crepe", Type = "Crepe", IsSeasonal = false, Price = 1000, Description = "A sweet crepe drizzled with Mannino honey and topped with mixed berries.", Image = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.mollyjwilk.com%2Fwp-content%2Fuploads%2F2022%2F06%2FFig-and-Honey-Crepe-Cake-MollyJWilk.jpg&f=1&nofb=1&ipt=d064ccb9823f2af6443a16cb3229ef26ddb872b4528f1e2e5a7a2e8252a6ee4f" },
+        new Item { Name = "Travis Special", Type = "Bagel", IsSeasonal = false, Price = 1400, Description = "Cream cheese, salmon, spinach, and a fried egg served on a freshly toasted bagel.", Image = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fbagels-smoked-salmon-cream-cheese-capers-ideal-creative-business-use-365420901.jpg&f=1&nofb=1&ipt=6a368785d04e55ab3d549f7d99ed001a6f1d3e0f93f1494303bb5002e0087843" }
+
+        );
 
 		await dataContext.SaveChangesAsync();
 	}
@@ -149,5 +153,25 @@ public static class SeedHelper
 
 		await dataContext.SaveChangesAsync();
 	}
+    private static async Task AddTables(DataContext dataContext)
+    {
+        if (dataContext.Set<Table>().Any())
+        {
+            return;
+        }
 
+        dataContext.Set<Table>().AddRange(
+        new Table { LocationId = 1, IsOccupied = true, IsReserved = false },
+        new Table { LocationId = 1, IsOccupied = false, IsReserved = true },
+        new Table { LocationId = 1, IsOccupied = false, IsReserved = false },
+        new Table { LocationId = 1, IsOccupied = false, IsReserved = false },
+        new Table { LocationId = 1, IsOccupied = false, IsReserved = false },
+        new Table { LocationId = 1, IsOccupied = false, IsReserved = false },
+        new Table { LocationId = 1, IsOccupied = false, IsReserved = false },
+        new Table { LocationId = 1, IsOccupied = false, IsReserved = false }
+
+        );
+
+        await dataContext.SaveChangesAsync();
+    }
 }
