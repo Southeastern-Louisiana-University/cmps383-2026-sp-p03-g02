@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Selu383.SP26.Api.Data;
 
@@ -11,9 +12,11 @@ using Selu383.SP26.Api.Data;
 namespace Selu383.SP26.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260408180001_AddTablesAndOrders")]
+    partial class AddTablesAndOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,8 +269,7 @@ namespace Selu383.SP26.Api.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -275,7 +277,7 @@ namespace Selu383.SP26.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredients");
+                    b.ToTable("Ingredient");
                 });
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Menu.Item", b =>
@@ -286,14 +288,6 @@ namespace Selu383.SP26.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsSeasonal")
                         .HasColumnType("bit");
 
@@ -302,9 +296,8 @@ namespace Selu383.SP26.Api.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
 
-                    b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -323,14 +316,11 @@ namespace Selu383.SP26.Api.Migrations
                     b.Property<int>("IngredientId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.HasKey("ItemId", "IngredientId");
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("ItemIngredients");
+                    b.ToTable("ItemIngredient");
                 });
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Orders.Order", b =>
@@ -344,15 +334,17 @@ namespace Selu383.SP26.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
 
                     b.Property<int>("TableId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Total")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Total")
+                        .HasColumnType("real");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -368,11 +360,8 @@ namespace Selu383.SP26.Api.Migrations
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Orders.OrderItem", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -381,36 +370,11 @@ namespace Selu383.SP26.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.HasKey("OrderId", "ItemId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
+                    b.HasIndex("ItemId");
 
                     b.ToTable("OrderItems");
-                });
-
-            modelBuilder.Entity("Selu383.SP26.Api.Features.Tables.Reservation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TableId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Tables.Table", b =>
@@ -494,8 +458,7 @@ namespace Selu383.SP26.Api.Migrations
                 {
                     b.HasOne("Selu383.SP26.Api.Features.Auth.User", "Manager")
                         .WithMany()
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("ManagerId");
 
                     b.Navigation("Manager");
                 });
@@ -503,13 +466,13 @@ namespace Selu383.SP26.Api.Migrations
             modelBuilder.Entity("Selu383.SP26.Api.Features.Menu.ItemIngredient", b =>
                 {
                     b.HasOne("Selu383.SP26.Api.Features.Menu.Ingredient", "Ingredient")
-                        .WithMany()
+                        .WithMany("ItemIngredient")
                         .HasForeignKey("IngredientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Selu383.SP26.Api.Features.Menu.Item", "Item")
-                        .WithMany("ItemIngredients")
+                        .WithMany("ItemIngredient")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -521,26 +484,40 @@ namespace Selu383.SP26.Api.Migrations
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Orders.Order", b =>
                 {
-                    b.HasOne("Selu383.SP26.Api.Features.Tables.Table", null)
+                    b.HasOne("Selu383.SP26.Api.Features.Tables.Table", "Table")
                         .WithMany("Orders")
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Selu383.SP26.Api.Features.Auth.User", null)
+                    b.HasOne("Selu383.SP26.Api.Features.Auth.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Table");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Orders.OrderItem", b =>
                 {
-                    b.HasOne("Selu383.SP26.Api.Features.Orders.Order", null)
+                    b.HasOne("Selu383.SP26.Api.Features.Menu.Item", "Item")
+                        .WithMany("OrderItem")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Selu383.SP26.Api.Features.Orders.Order", "Order")
                         .WithMany("OrderItem")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Auth.Role", b =>
@@ -555,9 +532,16 @@ namespace Selu383.SP26.Api.Migrations
                     b.Navigation("UserRoles");
                 });
 
+            modelBuilder.Entity("Selu383.SP26.Api.Features.Menu.Ingredient", b =>
+                {
+                    b.Navigation("ItemIngredient");
+                });
+
             modelBuilder.Entity("Selu383.SP26.Api.Features.Menu.Item", b =>
                 {
-                    b.Navigation("ItemIngredients");
+                    b.Navigation("ItemIngredient");
+
+                    b.Navigation("OrderItem");
                 });
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Orders.Order", b =>
