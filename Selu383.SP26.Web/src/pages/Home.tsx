@@ -50,7 +50,6 @@ const Home = () => {
         plugins={[autoplay.current]}
         onMouseEnter={autoplay.current.stop}
         onMouseLeave={() => autoplay.current.play()}
-        loop
         slideGap="md"
 
       >
