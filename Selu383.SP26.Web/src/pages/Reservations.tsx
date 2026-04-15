@@ -2,9 +2,15 @@ import {useEffect, useState} from "react";
 import { Card, Image, Text, Badge, Button, Group, SimpleGrid, AspectRatio, Box, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
+interface Table {
+  id: string | number;
+  isOccupied: boolean;
+  isReserved: boolean;
+}
 const Reservations = () => {
-  const [selectedTable, setSelectedTable] = useState(null);
-  const [tables, setTables] = useState([]);
+  const [selectedTable, setSelectedTable] = useState<Table | null>(null);
+  
+  const [tables, setTables] = useState<Table[]>([]);
 
   function Occupied({isOccupied, isReserved}) {
     if(isOccupied) {
@@ -57,7 +63,7 @@ const occupyTable = async (id) => {
   updateTableState(id, { isOccupied: true });
 };
 
-const updateTableState = (id, updates) => {
+const updateTableState = (id: string | number, updates: Partial<Table>) => {
   setTables((prev) =>
     prev.map((table) =>
       table.id === id ? { ...table, ...updates } : table
