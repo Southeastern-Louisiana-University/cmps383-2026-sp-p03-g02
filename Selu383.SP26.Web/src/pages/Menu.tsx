@@ -73,6 +73,7 @@ const Menu = () => {
       </Group>
       <SimpleGrid cols={4}>
       {filteredItems.map((item) => {
+        item.price = item.price / 10
         return (
           <Card shadow="sm" padding="lg" radius="md" withBorder m="sm" p="md">
             <Card.Section>
