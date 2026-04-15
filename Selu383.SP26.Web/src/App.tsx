@@ -8,10 +8,9 @@ import Reservations from "./pages/Reservations.tsx";
 import Cart from "./pages/Cart.tsx";
 import "./App.css";
 import { AppShell, Flex } from "@mantine/core";
-import '@mantine/carousel/styles.css';
-import { useEffect, useState } from "react";
-
-// import beans from "./assets/beans.jpg";
+import "@mantine/carousel/styles.css";
+import { useState, useEffect } from "react";
+import { type Item, type CartItem } from "./types";
 import Login from "./pages/Login.tsx";
 
 type CurrentUser = {
@@ -21,8 +20,22 @@ type CurrentUser = {
 };
 
 function App() {
-  // const headerRef = useRef<HTMLDivElement>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+
+  const addToCart = (item: Item) => {
+    setCart((prev) => {
+      const existing = prev.find((c) => c.id === item.id);
+      if (existing) {
+        return prev.map((c) =>
+          c.id === item.id ? { ...c, quantity: c.quantity + 1 } : c
+        );
+      }
+      return [...prev, { ...item, quantity: 1 }];
+    });
+  };
+
+  const clearCart = () => setCart([]);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -31,7 +44,6 @@ function App() {
           method: "GET",
           credentials: "include",
         });
-
         if (response.ok) {
           const data: CurrentUser = await response.json();
           setCurrentUser(data);
@@ -51,34 +63,21 @@ function App() {
     <div>
       <AppShell header={{ height: 70 }} footer={{ height: 100 }}>
         <AppShell.Header>
-          {/* <Navbar /> */}
           <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
-        
         </AppShell.Header>
-        <AppShell.Main style={{paddingLeft: 100, paddingRight: 100}}>
+        <AppShell.Main style={{ paddingLeft: 100, paddingRight: 100 }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/menu" element={<Menu />} />
+            <Route path="/menu" element={<Menu addToCart={addToCart} />} />
+            <Route path="/cart" element={<Cart cart={cart} clearCart={clearCart} />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />} />
-            <Route path="/cart" element={<Cart />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AppShell.Main>
-
-        <AppShell.Footer
-          style={{
-            position: "relative",
-          }}
-        >
-          <Flex
-            style={{
-              marginTop: "20px",
-              padding: "10px",
-              justifyContent: "center",
-            }}
-          >
+        <AppShell.Footer style={{ position: "relative" }}>
+          <Flex style={{ marginTop: "20px", padding: "10px", justifyContent: "center" }}>
             <Footer />
           </Flex>
         </AppShell.Footer>

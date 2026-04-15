@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Selu383.SP26.Api.Features.Auth;
 using Selu383.SP26.Api.Features.Locations;
 using Selu383.SP26.Api.Features.Menu;
+using Selu383.SP26.Api.Features.Orders;
 using Selu383.SP26.Api.Features.Tables;
 
 namespace Selu383.SP26.Api.Data;
@@ -17,9 +18,11 @@ public static class SeedHelper
 
 		await AddRoles(serviceProvider);
 		await AddUsers(serviceProvider);
-		await AddTables(dataContext);
-        await AddLocations(dataContext);
+
+		await AddLocations(dataContext);
+		await AddTables(dataContext);    
 		await AddItems(dataContext);
+		await AddOrders(dataContext);
 		await AddIngredients(dataContext);
 		await AddItemIngredients(dataContext);
 	}
@@ -115,6 +118,21 @@ public static class SeedHelper
 		dataContext.Set<Ingredient>().AddRange(
 		new Ingredient { Name = "Coffee Beans", Type = "Base Ingredient", IsAllergen = false },
 		new Ingredient { Name = "Almond Milk", Type = "Addon", IsAllergen = true }
+		);
+
+		await dataContext.SaveChangesAsync();
+	}
+	private static async Task AddOrders(DataContext dataContext)
+	{
+		if (dataContext.Set<Order>().Any())
+		{
+			return;
+		}
+
+		dataContext.Set<Order>().AddRange(
+			new Order { UserId = 1, LocationId = 1, TableId = 1, Items = [1, 1, 2], Total = 16 },
+			new Order { UserId = 1, LocationId = 2, TableId = 2, Items = [2], Total = 6 },
+			new Order { UserId = 2, LocationId = 1, TableId = 1, Items = [1, 1, 2], Total = 16 }
 		);
 
 		await dataContext.SaveChangesAsync();
