@@ -50,11 +50,11 @@ function App() {
   return (
     <div>
       <AppShell header={{ height: 70 }} footer={{ height: 100 }}>
-        {/* <AppShell.Header> */}
+        <AppShell.Header>
           {/* <Navbar /> */}
           <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
         
-        {/* </AppShell.Header> */}
+        </AppShell.Header>
         <AppShell.Main style={{paddingLeft: 100, paddingRight: 100}}>
           <Routes>
             <Route path="/" element={<Home />} />
