@@ -1,45 +1,56 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Link } from 'expo-router';
+import { Assets } from '@react-navigation/elements';
+import { ScrollView } from 'react-native';
 
 export default function HomeScreen() {
   return (
+    //header layout prototype
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
+      headerBackgroundColor={{ light: '#9e844d', dark: '#9e844d' }}
+      headerText='Caffeinated Lions'
+      >
+      <ThemedView>
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+          source="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.HUVnLSmPwNKr4YM64h5V0QHaE8%3Fpid%3DApi&f=1&ipt=2a07171075bd07c0db76357baf68480ecfbf4729615354dc886101e87783ed04&ipo=images"
+          style={{width: 200, height:200, alignSelf:'center', borderRadius: 15}}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
       </ThemedView>
+
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
+        <ThemedText type="subtitle">Welcome to Caffeinated Lions, your go-to spot for the best coffee in town!</ThemedText>
       </ThemedView>
+      <ThemedText type="subtitle">{"  "}</ThemedText>
+
       <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
+        <ThemedText type="subtitle">Try some of our most popular items!</ThemedText>
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false} 
+          contentContainerStyle={{ paddingHorizontal: 10, gap: 15 }}
+        >
+          {[
+            { name: 'Coffee', img: require('@/assets/images/coffer.png') },
+            { name: 'Evil Coffee', img: require('@/assets/images/Dark fucked up coffee.jpg') },
+            { name: 'Cattuccino', img: require('@/assets/images/cattuccino.png') },
+          ].map((item, index) => (
+            <ThemedView key={index} style={styles.card}>
+              <Image source={item.img} style={styles.cardImage} />
+              <ThemedText style={styles.cardText}>{item.name}</ThemedText>
+            </ThemedView>
+          ))}
+        </ScrollView>
+      </ThemedView>
+      <ThemedText type="subtitle">{" "}</ThemedText>
+      <ThemedView style={styles.stepContainer}>
+        <Link href="/menu">
           <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
+            <ThemedText type="subtitle" style = {{ color: '#274f7a', backgroundColor: '#fff5e8'}}>Or View the Full Menu</ThemedText>
           </Link.Trigger>
           <Link.Preview />
           <Link.Menu>
@@ -59,26 +70,28 @@ export default function HomeScreen() {
             </Link.Menu>
           </Link.Menu>
         </Link>
-
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
       </ThemedView>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  card: {
+    alignItems: 'center',
+    backgroundColor: '#f7ead3',
+    borderRadius: 15,
+    padding: 10,
+    width: 150,
+  },
+  cardImage: {
+    width: 130,
+    height: 130,
+    borderRadius: 10,
+  },
+  cardText: {
+    marginTop: 10,
+    fontWeight: 'bold',
+  },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
