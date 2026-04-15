@@ -1,13 +1,15 @@
-import { Flex, Container, Image, Text, SimpleGrid, Box, AspectRatio, Title } from "@mantine/core";
+import { Flex, Container, Image, Text, SimpleGrid, Box, Button, AspectRatio, Title } from "@mantine/core";
 import "../App.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel } from "@mantine/carousel";
 
 const Home = () => {
 
   const [items, setItems] = useState([]);
+  const navigate = useNavigate();
   const autoplay = useRef(Autoplay({delay: 5000}));
   
 
@@ -58,6 +60,15 @@ const Home = () => {
             <Box>
               <Title>{item.name}</Title>
               <Text size="sm">{item.description}</Text>
+              <Button 
+                type="button"
+                onClick={() => {
+                  navigate("/menu")
+                }}
+                >
+                  Go To Menu
+                </Button>
+              
             </Box>
             <Box>
               <Image
