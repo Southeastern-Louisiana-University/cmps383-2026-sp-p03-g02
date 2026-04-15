@@ -1,13 +1,20 @@
-import { Flex, Container, Image, Text, SimpleGrid, Box, AspectRatio, Title } from "@mantine/core";
+import { Flex, Container, Image, Text, SimpleGrid, Box, Button, Title } from "@mantine/core";
 import "../App.css";
-import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel } from "@mantine/carousel";
 
+interface MenuItem {
+  id: string | number;
+  name: string;
+  description: string;
+  image: string;
+}
 const Home = () => {
 
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<MenuItem[]>([]);
+  const navigate = useNavigate();
   const autoplay = useRef(Autoplay({delay: 5000}));
   
 
@@ -48,7 +55,6 @@ const Home = () => {
         plugins={[autoplay.current]}
         onMouseEnter={autoplay.current.stop}
         onMouseLeave={() => autoplay.current.play()}
-        loop
         slideGap="md"
 
       >
@@ -58,6 +64,15 @@ const Home = () => {
             <Box>
               <Title>{item.name}</Title>
               <Text size="sm">{item.description}</Text>
+              <Button 
+                type="button"
+                onClick={() => {
+                  navigate("/menu")
+                }}
+                >
+                  Go To Menu
+                </Button>
+              
             </Box>
             <Box>
               <Image

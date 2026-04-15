@@ -1,40 +1,86 @@
-import { Flex } from "@mantine/core";
-import "../App.css";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
-const Login = () => {
+type CurrentUser = {
+  id: number;
+  userName: string;
+  roles: string[];
+};
+
+type LoginProps = {
+  setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUser | null>>;
+};
+
+const Login = ({ setCurrentUser }: LoginProps) => {
+  const navigate = useNavigate();
+
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const response = await fetch("/api/authentication/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          userName,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        const data: CurrentUser = await response.json();
+        setCurrentUser(data);
+        navigate("/");
+      } else {
+        setError("Invalid username or password.");
+      }
+    } catch (err) {
+      console.error("Login failed:", err);
+      setError("Could not connect to the server.");
+    }
+  };
+
   return (
-    <div>
-      <h1>Login Page</h1>
-      <h2>Please log in to your account</h2>
-      <div
-        style={{
-          padding: 30,
-          border: "3px solid #000000",
-          borderRadius: "10px",
-          maxWidth: "500px",
-          margin: "0 auto",
-        }}
-      >
-        <div>
-          <Flex
-            direction="column"
-            gap="md"
-            style={{ maxWidth: "400px", margin: "0 auto" }}
-          >
-            <label htmlFor="username">Username:</label>
-            <input type="text" id="username" name="username" />
-          </Flex>
-          <Flex
-            direction="column"
-            gap="md"
-            style={{ maxWidth: "400px", margin: "20px auto" }}
-          >
-            <label htmlFor="password">Password:</label>
-            <input type="password" id="password" name="password" />
-          </Flex>
-          <button>Login</button>
-        </div>
-      </div>
+    <div className="login-page">
+      <h1>Login</h1>
+      <p className="subtitle">Please log in to your account</p>
+
+      <form className="login-card" onSubmit={handleLogin}>
+        <label htmlFor="userName">Username</label>
+        <input
+          id="userName"
+          type="text"
+          placeholder="Enter username"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          required
+        />
+
+        <label htmlFor="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        {error && <p className="login-error">{error}</p>}
+
+        <button className="login-btn" type="submit">
+          Login
+        </button>
+      </form>
     </div>
   );
 };

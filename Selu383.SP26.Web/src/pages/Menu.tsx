@@ -1,19 +1,11 @@
 import { useEffect, useState } from "react";
 import {
-  Card,
-  Image,
-  Text,
-  Badge,
-  Button,
-  Group,
-  SimpleGrid,
-  AspectRatio,
-  Box,
-  Modal,
+  Card, Image, Text, Badge, Button, Group,
+  SimpleGrid, AspectRatio, Box, Modal,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import "../App.css";
-import { type Item, type CartItem } from "../types";
+import { type Item } from "../types";
 
 interface Ingredient {
   id: number;
@@ -25,9 +17,7 @@ interface MenuProps {
 }
 
 function Seasonal({ isSeasonal }: { isSeasonal: boolean }) {
-  if (isSeasonal) {
-    return <Badge color="pink">Seasonal</Badge>;
-  }
+  if (isSeasonal) return <Badge color="pink">Seasonal</Badge>;
   return null;
 }
 
@@ -67,29 +57,20 @@ const Menu = ({ addToCart }: MenuProps) => {
       <Modal opened={opened} onClose={close} title={selectedItem?.name} centered>
         <Text mb="sm">{selectedItem?.description}</Text>
         <Badge color="blue" mb="md">
-          {new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-          }).format(selectedItem?.price ?? 0)}
+          {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(selectedItem?.price ?? 0)}
         </Badge>
-
-        <Text fw={500} mb="xs">
-          Ingredients:
-        </Text>
+        <Text fw={500} mb="xs">Ingredients:</Text>
         {ingredients
           .filter((ing) => selectedItem?.ingredients?.includes(ing.id))
           .map((ing) => (
             <Text key={ing.id}>• {ing.name}</Text>
           ))}
-
         <Button
           color="green"
           fullWidth
           mt="md"
           onClick={() => {
-            if (selectedItem) {
-              addToCart(selectedItem);
-            }
+            if (selectedItem) addToCart(selectedItem);
             close();
           }}
         >
@@ -115,34 +96,20 @@ const Menu = ({ addToCart }: MenuProps) => {
             <Card.Section>
               <Box pos="relative">
                 <AspectRatio ratio={284 / 160}>
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fit="contain"
-                    w="100%"
-                    h="100%"
-                  />
+                  <Image src={item.image} alt={item.name} fit="contain" w="100%" h="100%" />
                 </AspectRatio>
                 <Box pos="absolute" top={8} right={8}>
                   <Seasonal isSeasonal={item.isSeasonal} />
                 </Box>
               </Box>
             </Card.Section>
-
             <Group justify="space-between" align="center" mt="md">
               <Text fw={500}>{item.name}</Text>
               <Badge color="blue">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                }).format(item.price)}
+                {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(item.price)}
               </Badge>
             </Group>
-
-            <Text mt="md" mb="xs">
-              {item.description}
-            </Text>
-
+            <Text mt="md" mb="xs">{item.description}</Text>
             <Button color="green" fullWidth mt="md" onClick={() => openModal(item)}>
               Add to Cart
             </Button>

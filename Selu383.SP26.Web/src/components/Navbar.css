@@ -35,13 +35,27 @@ nav .title{
 }
 
 nav .login{
+    margin: 1rem;
+    font-weight: bold;    
+    text-decoration: none;
     font-size: 1.25rem;
     font-family: "Trebuchet MS";
-    margin: 1rem;
-    font-weight: bold;
-    text-decoration: none;
     color: rgb(250, 246, 241);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: rgba(0, 0, 0, 0);
 }
+nav .login a:hover {
+    transform: scale(1.1);
+    color: rgb(255, 224, 187);
+}
+
+.login.active {
+    transform: scale(1.05);
+    background-image: linear-gradient(rgb(218, 200, 173),rgba(0, 0, 0, 0.071));
+}
+
+
 nav ul {
     position: center;
     display: flex;
