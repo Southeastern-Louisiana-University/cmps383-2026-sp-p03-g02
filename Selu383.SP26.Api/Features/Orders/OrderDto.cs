@@ -11,8 +11,9 @@ public class OrderDto
 	public int LocationId { get; set; }
 	public int TableId { get; set; }
 	public decimal Total { get; set; }
+	public int[] Items { get; set; } = new int[] { };
 
 	[Column("created_at")]
 	public DateTime CreatedAt { get; set; } = DateTime.Now;
-	public virtual ICollection<OrderItem> OrderItem { get; set; } = new List<OrderItem>();
+	//public virtual ICollection<OrderItem> OrderItem { get; set; } = new List<OrderItem>();
 }

@@ -8,29 +8,48 @@ import Reservations from "./pages/Reservations.tsx";
 import Cart from "./pages/Cart.tsx";
 import "./App.css";
 import { AppShell, Flex } from "@mantine/core";
-import '@mantine/carousel/styles.css';
-import { useRef } from "react";
+import "@mantine/carousel/styles.css";
+import { useRef, useState } from "react";
+import { type Item, type CartItem } from "./types";
 
 // import beans from "./assets/beans.jpg";
 import Login from "./pages/Login.tsx";
 
 function App() {
   const headerRef = useRef<HTMLDivElement>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  const addToCart = (item: Item) => {
+    setCart((prev) => {
+      const existing = prev.find((c) => c.id === item.id);
+      if (existing) {
+        return prev.map((c) =>
+          c.id === item.id ? { ...c, quantity: c.quantity + 1 } : c,
+        );
+      }
+      return [...prev, { ...item, quantity: 1 }];
+    });
+  };
+
+  const clearCart = () => setCart([]);
 
   return (
     <div>
       <AppShell header={{ height: 70 }} footer={{ height: 100 }}>
         {/* <AppShell.Header> */}
-          <Navbar />
+        <Navbar />
         {/* </AppShell.Header> */}
-        <AppShell.Main style={{paddingLeft: 100, paddingRight: 100}}>
+        <AppShell.Main style={{ paddingLeft: 100, paddingRight: 100 }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/menu" element={<Menu />} />
-            <Route path="/orders" element={<Orders />} />
+            <Route path="/menu" element={<Menu addToCart={addToCart} />} />
+            <Route
+              path="/cart"
+              element={<Cart cart={cart} clearCart={clearCart} />}
+            />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route path="/orders" element={<Orders />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AppShell.Main>
