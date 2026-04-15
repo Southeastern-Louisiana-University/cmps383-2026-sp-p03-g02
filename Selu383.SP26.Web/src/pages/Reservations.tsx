@@ -1,66 +1,50 @@
 import {useEffect, useState} from "react";
-import { Card, Image, Text, Badge, Button, Group, SimpleGrid, AspectRatio, Box, Modal } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Card, Text, Button, Group, SimpleGrid } from '@mantine/core';
 
 interface Table {
   id: string | number;
   isOccupied: boolean;
   isReserved: boolean;
 }
-const Reservations = () => {
-  const [selectedTable, setSelectedTable] = useState<Table | null>(null);
-  
+const Reservations = () => { 
   const [tables, setTables] = useState<Table[]>([]);
 
-  function Occupied({isOccupied, isReserved}) {
-    if(isOccupied) {
-        return <Text>Occupied</Text>
-    }
-    if(isReserved) {
-        return <Text>Reserved</Text>
-    }
-    return <Text>Open</Text>
+function Occupied({ isOccupied, isReserved }: { isOccupied: boolean; isReserved: boolean }) {
+  if (isOccupied) return <Text>Occupied</Text>;
+  if (isReserved) return <Text>Reserved</Text>;
+  return <Text>Open</Text>;
+}
+
+  const getColor = (table: Table) => {
+  if (table.isOccupied) {
+    return "#EF9A9A";
   }
-
-  const getColor = (table) => {
-    if(table.isOccupied){
-        return "#EF9A9A";
-    }
-    if(table.isReserved){
-        return "#FFE082"
-    }
-    return "#A5D6A7"
+  if (table.isReserved) {
+    return "#FFE082";
   }
-
-  const reserveTable = async (id) => {
-  await fetch(`/api/tables/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      isReserved: true,
-      isOccupied: false,
-    }),
-  });
-
-  updateTableState(id, { isReserved: true });
+  return "#A5D6A7";
 };
 
-
-const occupyTable = async (id) => {
+const reserveTable = async (id: string | number) => {
   await fetch(`/api/tables/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      isReserved: false,
-      isOccupied: true,
-    }),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ isReserved: true, isOccupied: false }),
   });
 
-  updateTableState(id, { isOccupied: true });
+  // Explicitly update both so the UI reflects the API call exactly
+  updateTableState(id, { isReserved: true, isOccupied: false });
+};
+
+const occupyTable = async (id: string | number) => {
+  await fetch(`/api/tables/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ isReserved: false, isOccupied: true }),
+  });
+
+  // Explicitly update both
+  updateTableState(id, { isReserved: false, isOccupied: true });
 };
 
 const updateTableState = (id: string | number, updates: Partial<Table>) => {

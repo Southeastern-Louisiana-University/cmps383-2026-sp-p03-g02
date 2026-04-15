@@ -9,7 +9,7 @@ import Cart from "./pages/Cart.tsx";
 import "./App.css";
 import { AppShell, Flex } from "@mantine/core";
 import '@mantine/carousel/styles.css';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 // import beans from "./assets/beans.jpg";
 import Login from "./pages/Login.tsx";
@@ -21,7 +21,7 @@ type CurrentUser = {
 };
 
 function App() {
-  const headerRef = useRef<HTMLDivElement>(null);
+  // const headerRef = useRef<HTMLDivElement>(null);
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
 
   useEffect(() => {
