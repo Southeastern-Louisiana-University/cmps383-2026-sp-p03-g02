@@ -16,3 +16,25 @@ export interface CartItem {
   price: number;
   quantity: number;
 }
+
+export interface Location {
+  id: number;
+  name: string;
+  address: string;
+}
+
+export interface Order {
+  id: number;
+  userId: number;
+  locationId: number;
+  tableId: number;
+  total: number;
+  items: number[];
+  createdAt: string;
+}
+
+export interface User {
+  id: number;
+  username: string;
+  roles: string[];
+}
