@@ -12,7 +12,7 @@ interface MenuProps {
 }
 
 function Seasonal({ isSeasonal }: { isSeasonal: boolean }) {
-  if (isSeasonal) return <Badge color="pink">Seasonal</Badge>;
+  if (isSeasonal) return <Badge color="pink">Featured</Badge>;
   return null;
 }
 
@@ -87,7 +87,7 @@ const Menu = ({ addToCart }: MenuProps) => {
 
       <SimpleGrid cols={4}>
         {filteredItems.map((item) => (
-          <Card shadow="sm" padding="lg" radius="md" withBorder m="sm" p="md" key={item.id}>
+          <Card shadow="sm" padding="lg" radius="md" withBorder m="sm" p="md" key={item.id} style={{display: "flex", flexDirection: "column", height: "100%"}}>
             <Card.Section>
               <Box pos="relative">
                 <AspectRatio ratio={284 / 160}>
@@ -98,6 +98,7 @@ const Menu = ({ addToCart }: MenuProps) => {
                 </Box>
               </Box>
             </Card.Section>
+            <div style={{flex: 1}}>
             <Group justify="space-between" align="center" mt="md">
               <Text fw={500}>{item.name}</Text>
               <Badge color="blue">
@@ -105,6 +106,7 @@ const Menu = ({ addToCart }: MenuProps) => {
               </Badge>
             </Group>
             <Text mt="md" mb="xs">{item.description}</Text>
+            </div>
             <Button color="green" fullWidth mt="md" onClick={() => openModal(item)}>
               Add to Cart
             </Button>
