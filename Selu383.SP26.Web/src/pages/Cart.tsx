@@ -42,10 +42,10 @@ const placeOrder = async () => {
       <h2>Cart</h2>
       {cart.map((item) => (
         <p key={item.id}>
-          {item.name} x{item.quantity} — ${(item.price * item.quantity).toFixed(2)}
+          {item.name} x{item.quantity} — ${(item.price / 100 * item.quantity).toFixed(2)}
         </p>
       ))}
-      <p><strong>Total: ${total.toFixed(2)}</strong></p>
+      <p><strong>Total: ${(total / 100).toFixed(2)}</strong></p>
       <Button onClick={placeOrder} disabled={cart.length === 0}>
         Place Order
       </Button>

@@ -47,12 +47,10 @@ const Menu = ({ addToCart }: MenuProps) => {
 
   return (
     <div>
-      <h1>Menu Page</h1>
-
       <Modal opened={opened} onClose={close} title={selectedItem?.name} centered>
         <Text mb="sm">{selectedItem?.description}</Text>
         <Badge color="blue" mb="md">
-          {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(selectedItem?.price ?? 0)}
+          {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format((selectedItem?.price ?? 0) / 100 )}
         </Badge>
         <Text fw={500} mb="xs">Ingredients:</Text>
         {ingredients
@@ -72,6 +70,9 @@ const Menu = ({ addToCart }: MenuProps) => {
           Add to Cart
         </Button>
       </Modal>
+
+      <h1>Menu Page</h1>
+
 
       <Group mb="md">
         {types.map((type) => (
@@ -102,7 +103,7 @@ const Menu = ({ addToCart }: MenuProps) => {
             <Group justify="space-between" align="center" mt="md">
               <Text fw={500}>{item.name}</Text>
               <Badge color="blue">
-                {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(item.price)}
+                {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(item.price / 100)}
               </Badge>
             </Group>
             <Text mt="md" mb="xs">{item.description}</Text>

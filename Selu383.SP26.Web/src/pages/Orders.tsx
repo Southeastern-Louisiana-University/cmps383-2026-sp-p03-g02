@@ -35,7 +35,7 @@ const Orders = ({ currentUser }: OrderProps) => {
             {new Intl.NumberFormat("en-US", {
               style: "currency",
               currency: "USD",
-            }).format(order.total)}
+            }).format(order.total / 100)}
           </Badge>
         </Group>
         <div style={{ textAlign: "left" }}>
@@ -50,7 +50,7 @@ const Orders = ({ currentUser }: OrderProps) => {
                     ? new Intl.NumberFormat("en-US", {
                         style: "currency",
                         currency: "USD",
-                      }).format(item.price)
+                      }).format(item.price / 100)
                     : ""}
                 </p>
               );
