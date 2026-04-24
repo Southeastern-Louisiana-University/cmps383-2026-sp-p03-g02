@@ -4,16 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel } from "@mantine/carousel";
+import type { ItemGetDto } from "../types";
 
-interface MenuItem {
-  id: string | number;
-  name: string;
-  description: string;
-  image: string;
-}
 const Home = () => {
-
-  const [items, setItems] = useState<MenuItem[]>([]);
+  const [items, setItems] = useState<ItemGetDto[]>([]);
   const navigate = useNavigate();
   const autoplay = useRef(Autoplay({delay: 5000}));
   

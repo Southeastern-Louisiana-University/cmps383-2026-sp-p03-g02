@@ -1,13 +1,9 @@
 import {useEffect, useState} from "react";
 import { Card, Text, Button, Group, SimpleGrid } from '@mantine/core';
+import type { TableGetDto } from "../types";
 
-interface Table {
-  id: string | number;
-  isOccupied: boolean;
-  isReserved: boolean;
-}
 const Reservations = () => { 
-  const [tables, setTables] = useState<Table[]>([]);
+  const [tables, setTables] = useState<TableGetDto[]>([]);
 
 function Occupied({ isOccupied, isReserved }: { isOccupied: boolean; isReserved: boolean }) {
   if (isOccupied) return <Text>Occupied</Text>;
@@ -15,7 +11,7 @@ function Occupied({ isOccupied, isReserved }: { isOccupied: boolean; isReserved:
   return <Text>Open</Text>;
 }
 
-  const getColor = (table: Table) => {
+  const getColor = (table: TableGetDto) => {
   if (table.isOccupied) {
     return "#EF9A9A";
   }
@@ -47,7 +43,7 @@ const occupyTable = async (id: string | number) => {
   updateTableState(id, { isReserved: false, isOccupied: true });
 };
 
-const updateTableState = (id: string | number, updates: Partial<Table>) => {
+const updateTableState = (id: string | number, updates: Partial<TableGetDto>) => {
   setTables((prev) =>
     prev.map((table) =>
       table.id === id ? { ...table, ...updates } : table

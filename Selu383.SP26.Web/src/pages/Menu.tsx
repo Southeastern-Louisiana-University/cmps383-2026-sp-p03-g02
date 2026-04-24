@@ -5,15 +5,10 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import "../App.css";
-import { type Item } from "../types";
-
-interface Ingredient {
-  id: number;
-  name: string;
-}
+import type { ItemGetDto, IngredientGetDto } from "../types";
 
 interface MenuProps {
-  addToCart: (item: Item) => void;
+  addToCart: (item: ItemGetDto) => void;
 }
 
 function Seasonal({ isSeasonal }: { isSeasonal: boolean }) {
@@ -22,13 +17,13 @@ function Seasonal({ isSeasonal }: { isSeasonal: boolean }) {
 }
 
 const Menu = ({ addToCart }: MenuProps) => {
-  const [items, setItems] = useState<Item[]>([]);
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [items, setItems] = useState<ItemGetDto[]>([]);
+  const [ingredients, setIngredients] = useState<IngredientGetDto[]>([]);
   const [selectedType, setSelectedType] = useState("All");
   const [opened, { open, close }] = useDisclosure(false);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [selectedItem, setSelectedItem] = useState<ItemGetDto | null>(null);
 
-  const openModal = (item: Item) => {
+  const openModal = (item: ItemGetDto) => {
     setSelectedItem(item);
     open();
   };

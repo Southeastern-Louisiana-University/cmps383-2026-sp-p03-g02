@@ -1,24 +1,21 @@
 import { Badge, Card, Flex, Group } from "@mantine/core";
 import "../App.css";
 import { useState, useEffect } from "react";
+import type { OrderGetDto, ItemGetDto, UserGetDto } from "../types";
 
-interface Order {
-  id: number;
-  total: number;
-  items: number[];
-}
+interface OrderProps {
+    currentUser: UserGetDto | null;
+  }
 
-interface Item {
-  id: number;
-  name: string;
-  price: number;
-}
+const Orders = ({ currentUser }: OrderProps) => {
+  const [orders, setOrders] = useState<OrderGetDto[]>([]);
+  const [items, setItems] = useState<ItemGetDto[]>([]);
+ 
+  const userOrders = currentUser?.roles[0] === "Admin" ? orders : orders.filter(
+    (order) => order.userId == currentUser?.id
+  )
 
-const Orders = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [items, setItems] = useState<Item[]>([]);
-
-  const listOrders = orders.map((order) => {
+  const listOrders = userOrders.map((order) => {
     return (
       <Card
         shadow="sm"
@@ -31,6 +28,9 @@ const Orders = () => {
       >
         <Group justify="space-between" align="center" mt="md">
           <p></p>
+          <div>
+            <text>{order.userId}</text>
+          </div>
           <Badge color="blue">
             {new Intl.NumberFormat("en-US", {
               style: "currency",
@@ -63,6 +63,12 @@ const Orders = () => {
 
   useEffect(() => {
     fetch("/api/orders")
+      .then((res) => res.json())
+      .then((res) => {
+        setOrders(res);
+      });
+
+    fetch("/api/users")
       .then((res) => res.json())
       .then((res) => {
         setOrders(res);

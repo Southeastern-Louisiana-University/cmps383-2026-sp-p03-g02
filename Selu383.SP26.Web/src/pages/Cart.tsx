@@ -1,24 +1,23 @@
 import { Button } from "@mantine/core";
 import "../App.css";
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-}
+import type { CartItemGetDto, UserGetDto } from "../types";
 
 interface CartProps {
-  cart: CartItem[];
+  cart: CartItemGetDto[];
   clearCart: () => void;
+  currentUser: UserGetDto | null;
 }
 
-const Cart = ({ cart, clearCart }: CartProps) => {
+const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
 const placeOrder = async () => {
+  if(!currentUser) {
+    alert("Please log in before placing an order.")
+    return;
+  }
   const orderPayload = {
-    userId: 1,
+    userId: currentUser?.id,
     locationId: 1,
     tableId: 1,
     items: cart.flatMap((item) => Array(item.quantity).fill(item.id)),

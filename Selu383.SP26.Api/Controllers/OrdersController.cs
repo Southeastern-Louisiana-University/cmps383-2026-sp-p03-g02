@@ -49,7 +49,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 	}
 
 	[HttpPost]
-	[Authorize(Roles = RoleNames.Admin)]
+	[Authorize]
 	public ActionResult<OrderDto> Create(OrderDto dto)
 	{
 
