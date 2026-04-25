@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   Card, Image, Text, Badge, Button, Group,
-  SimpleGrid, AspectRatio, Box, Modal, Checkbox, Stack
+  SimpleGrid, AspectRatio, Box, Modal, Checkbox,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import "../App.css";
@@ -30,6 +30,7 @@ const Menu = ({ addToCart }: MenuProps) => {
 
   const openModal = (item: ItemGetDto) => {
     setSelectedItem(item);
+    setSelectedIngredientIds([]);
     open();
   };
 
@@ -47,10 +48,6 @@ const Menu = ({ addToCart }: MenuProps) => {
 
     close();
   };
-
-  const availableIngredients = ingredients.filter((ing) => 
-    selectedItem?.ingredients?.includes(ing.id)
-  )
 
   const types = ["All", ...new Set(items.map((item) => item.type))];
 
@@ -71,19 +68,27 @@ const Menu = ({ addToCart }: MenuProps) => {
 
   return (
     <div>
-  <Modal opened={opened} onClose={close} title={selectedItem?.name} centered withinPortal>
+      <Modal opened={opened} onClose={close} title={selectedItem?.name} centered withinPortal>
         <Text mb="sm">{selectedItem?.description}</Text>
         <Badge color="blue" mb="md">
           {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format((selectedItem?.price ?? 0) / 100 )}
         </Badge>
         <Text fw={500} mb="xs">Ingredients:</Text>
-        <Checkbox.Group value = {selectedIngredientIds.map(String)} onChange={(values) => setSelectedIngredientIds(values.map((v) => Number(v)))}>
-          <Stack gap="xs" mb="md">
-            {availableIngredients.map((ing) => (
-              <Checkbox key={ing.id} value={String(ing.id)} label={ing.name}/>
-            ))}
-          </Stack>
-        </Checkbox.Group>
+        <SimpleGrid cols={2}>
+        {ingredients.map((ingredient) => (
+          <Checkbox 
+            label={ingredient.name}
+            checked={selectedIngredientIds.includes(ingredient.id)}
+            onChange={(event) => {
+              if (event.currentTarget.checked) {
+                setSelectedIngredientIds((prev) => [...prev, ingredient.id]);
+            } else{
+              setSelectedIngredientIds((prev) => prev.filter((id) => id !== ingredient.id))
+            }
+            }}
+          />
+        ))}
+        </SimpleGrid>
         <Button
           color="green"
           fullWidth

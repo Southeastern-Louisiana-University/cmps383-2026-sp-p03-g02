@@ -22,6 +22,7 @@ const placeOrder = async () => {
     locationId: 1,
     tableId: 1,
     items: cart.flatMap((item) => Array(item.quantity).fill(item.id)),
+    ingredients: cart.flatMap((selectedIngredients) => Array().fill(selectedIngredients)),
     total,
   };
 
@@ -42,16 +43,19 @@ const placeOrder = async () => {
     <div>
       <h2>Cart</h2>
       {cart.map((item) => (
+        <div>
         <p key={item.id}>
           {item.name} x{item.quantity} — ${(item.price / 100 * item.quantity).toFixed(2)}
         </p>
-        // {item.selectedIngredients?.length > 0 && (
-        //   <ul>
-        //     {item.selectedIngredients.map((ingredient) => (
-        //       <li key={ingredient.id}>{ingredient.name}</li>
-        //     ))}
-        //   </ul>
-        // )}
+
+        {(item.selectedIngredients ?? []).length > 0 && (
+          <ul style={{ marginTop: "0.25rem", marginLeft: "1.5rem" }}>
+            {(item.selectedIngredients ?? []).map((ingredient) => (
+              <li key={ingredient.id}>{ingredient.name}</li>
+            ))}
+           </ul>
+        )}
+        </div>
       ))}
       <p><strong>Total: ${(total / 100).toFixed(2)}</strong></p>
       <Button onClick={placeOrder} disabled={cart.length === 0}>

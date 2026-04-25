@@ -12,6 +12,7 @@ export interface ItemGetDto {
 
 export interface CartItemGetDto {
   id: number;
+  selectedIngredients?: IngredientGetDto[];
   name: string;
   price: number;
   quantity: number;
