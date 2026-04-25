@@ -12,8 +12,8 @@ using Selu383.SP26.Api.Data;
 namespace Selu383.SP26.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260424144502_temp2")]
-    partial class temp2
+    [Migration("20260425210218_FixOrderItems")]
+    partial class FixOrderItems
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -398,6 +398,10 @@ namespace Selu383.SP26.Api.Migrations
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Modifications")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -406,6 +410,8 @@ namespace Selu383.SP26.Api.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
 
                     b.HasIndex("OrderId");
 
@@ -559,7 +565,7 @@ namespace Selu383.SP26.Api.Migrations
                 {
                     b.HasOne("Selu383.SP26.Api.Features.Menu.Item", null)
                         .WithMany("OrderItem")
-                        .HasForeignKey("OrderId")
+                        .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
