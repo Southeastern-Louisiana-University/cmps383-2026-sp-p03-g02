@@ -16,6 +16,7 @@ export interface CartItemGetDto {
   name: string;
   price: number;
   quantity: number;
+  modifications?: string;
 }
 
 export type UserGetDto = {
@@ -31,10 +32,19 @@ export type IngredientGetDto = {
 
 export type OrderGetDto = {
   id: number;
-  userName: string;
-  total: number;
-  items: number[];
   userId: number;
+  userName: string;
+  locationId: number;
+  tableId: number;
+  total: number;
+  items: number[];        // not needed anymore since we're sending orderItem
+  orderItem: {
+    id: number;
+    itemId: number;
+    itemName: string;
+    modifications: string;
+  }[];
+  createdAt: string;
 }
 
 export type TableGetDto = {

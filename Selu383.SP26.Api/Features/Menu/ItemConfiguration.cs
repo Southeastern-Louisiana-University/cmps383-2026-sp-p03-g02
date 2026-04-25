@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Selu383.SP26.Api.Features.Orders;
 
 namespace Selu383.SP26.Api.Features.Menu;
 
@@ -17,6 +18,15 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
 			.HasForeignKey(i => i.ItemId)
 			.IsRequired()
 			.OnDelete(DeleteBehavior.Cascade);
+
+
+		builder
+			.HasMany(x => x.OrderItem)
+			.WithOne()
+			.HasForeignKey(oi => oi.ItemId)
+			.IsRequired()
+			.OnDelete(DeleteBehavior.Cascade);
+
 
 		builder.Property(e => e.Price)
 			.HasColumnType("decimal(18,2)")
