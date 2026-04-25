@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   Card, Image, Text, Badge, Button, Group,
-  SimpleGrid, AspectRatio, Box, Modal,
+  SimpleGrid, AspectRatio, Box, Modal, Checkbox, Stack
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import "../App.css";
@@ -9,6 +9,10 @@ import type { ItemGetDto, IngredientGetDto } from "../types";
 
 interface MenuProps {
   addToCart: (item: ItemGetDto) => void;
+}
+
+interface CartItem extends ItemGetDto {
+  selectedIngredients?: IngredientGetDto[];
 }
 
 function Seasonal({ isSeasonal }: { isSeasonal: boolean }) {
@@ -22,11 +26,31 @@ const Menu = ({ addToCart }: MenuProps) => {
   const [selectedType, setSelectedType] = useState("All");
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedItem, setSelectedItem] = useState<ItemGetDto | null>(null);
+  const [selectedIngredientIds, setSelectedIngredientIds] = useState<number[]>([]);
 
   const openModal = (item: ItemGetDto) => {
     setSelectedItem(item);
     open();
   };
+
+  const handleAddToCart = () => {
+    if (!selectedItem) return;
+
+    const selectedIngredients = ingredients.filter((ing) => 
+      selectedIngredientIds.includes(ing.id)
+  )
+
+    addToCart({
+      ...selectedItem,
+      selectedIngredients,
+    });
+
+    close();
+  };
+
+  const availableIngredients = ingredients.filter((ing) => 
+    selectedItem?.ingredients?.includes(ing.id)
+  )
 
   const types = ["All", ...new Set(items.map((item) => item.type))];
 
@@ -53,11 +77,13 @@ const Menu = ({ addToCart }: MenuProps) => {
           {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format((selectedItem?.price ?? 0) / 100 )}
         </Badge>
         <Text fw={500} mb="xs">Ingredients:</Text>
-        {ingredients
-          .filter((ing) => selectedItem?.ingredients?.includes(ing.id))
-          .map((ing) => (
-            <Text key={ing.id}>• {ing.name}</Text>
-          ))}
+        <Checkbox.Group value = {selectedIngredientIds.map(String)} onChange={(values) => setSelectedIngredientIds(values.map((v) => Number(v)))}>
+          <Stack gap="xs" mb="md">
+            {availableIngredients.map((ing) => (
+              <Checkbox key={ing.id} value={String(ing.id)} label={ing.name}/>
+            ))}
+          </Stack>
+        </Checkbox.Group>
         <Button
           color="green"
           fullWidth

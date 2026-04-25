@@ -5,18 +5,16 @@ import type { TableGetDto } from "../types";
 const Reservations = () => { 
   const [tables, setTables] = useState<TableGetDto[]>([]);
 
-function Occupied({ isOccupied, isReserved }: { isOccupied: boolean; isReserved: boolean }) {
-  if (isOccupied) return <Text>Occupied</Text>;
-  if (isReserved) return <Text>Reserved</Text>;
+function Occupied({ isReserved }: { isReserved: boolean }) {
+  if (isReserved) {
+    return <Text>Reserved</Text>;
+  } 
   return <Text>Open</Text>;
 }
 
   const getColor = (table: TableGetDto) => {
-  if (table.isOccupied) {
-    return "#EF9A9A";
-  }
   if (table.isReserved) {
-    return "#FFE082";
+    return "#EF9A9A";
   }
   return "#A5D6A7";
 };
@@ -25,22 +23,10 @@ const reserveTable = async (id: string | number) => {
   await fetch(`/api/tables/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ isReserved: true, isOccupied: false }),
+    body: JSON.stringify({ isReserved: true }),
   });
 
-  // Explicitly update both so the UI reflects the API call exactly
-  updateTableState(id, { isReserved: true, isOccupied: false });
-};
-
-const occupyTable = async (id: string | number) => {
-  await fetch(`/api/tables/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ isReserved: false, isOccupied: true }),
-  });
-
-  // Explicitly update both
-  updateTableState(id, { isReserved: false, isOccupied: true });
+  updateTableState(id, { isReserved: true });
 };
 
 const updateTableState = (id: string | number, updates: Partial<TableGetDto>) => {
@@ -64,7 +50,7 @@ const updateTableState = (id: string | number, updates: Partial<TableGetDto>) =>
         <h1>Reservations</h1>
         <SimpleGrid cols={4}>
             {tables.map((table) => {
-                const isOpen = !table.isOccupied && !table.isReserved
+                const isOpen = !table.isReserved
 
                 return ( 
                     <Card 
@@ -81,7 +67,6 @@ const updateTableState = (id: string | number, updates: Partial<TableGetDto>) =>
                     }}>
                         <Text>Table</Text>
                         <Occupied 
-                            isOccupied={table.isOccupied}
                             isReserved={table.isReserved}
                         />
 
@@ -92,12 +77,6 @@ const updateTableState = (id: string | number, updates: Partial<TableGetDto>) =>
                                     color="yellow"
                                     onClick={() => reserveTable(table.id)}>
                                     Reserve
-                                </Button>
-                                <Button 
-                                    size="xs" 
-                                    color="red"
-                                    onClick={() => occupyTable(table.id)}>
-                                    Claim
                                 </Button>
                             </Group>
                         )}
