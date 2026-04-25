@@ -19,13 +19,36 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 	[HttpGet]
 	public IQueryable<OrderDto> GetAll()
 	{
+
 		return dataContext.Set<Order>()
 			.Include(x => x.OrderItem)
-			.Where(x => x.UserId == User.GetCurrentUserId())
 			.Select(x => new OrderDto
 			{
 				Id = x.Id,
 				UserId = x.UserId,
+				UserName = x.UserName,
+				LocationId = x.LocationId,
+				TableId = x.TableId,
+				Total = x.Total,
+				Items = x.Items,
+				CreatedAt = x.CreatedAt,
+				OrderItem = x.OrderItem
+			});
+	}
+
+	[HttpGet("mine")]
+	public IQueryable<OrderDto> GetAllForUser()
+	{
+		var userId = User.GetCurrentUserId();
+
+		return dataContext.Set<Order>()
+			.Include(x => x.OrderItem)
+			.Where(x => x.UserId == userId)
+			.Select(x => new OrderDto
+			{
+				Id = x.Id,
+				UserId = x.UserId,
+				UserName = x.UserName,
 				LocationId = x.LocationId,
 				TableId = x.TableId,
 				Total = x.Total,
@@ -50,6 +73,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 		{
 			Id = result.Id,
 			UserId = result.UserId,
+			UserName = result.UserName,
 			LocationId = result.LocationId,
 			TableId = result.TableId,
 			Total = result.Total,
@@ -58,9 +82,11 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 	}
 
 	[HttpPost]
+	[Authorize]
 	public ActionResult<OrderDto> Create(OrderDto dto)
 	{
 		var userId = User.GetCurrentUserId();
+
 		if (userId == null)
 		{
 			return Unauthorized();
@@ -92,11 +118,8 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 		}
 
 
-		var Tables = dataContext.Set<Table>();
-		var Locations = dataContext.Set<Location>();
-
-		var table = Tables.FirstOrDefault(x => x.Id == dto.TableId);
-		var location = Locations.FirstOrDefault(x => x.Id == dto.LocationId);
+		var table = dataContext.Set<Table>().FirstOrDefault(x => x.Id == dto.TableId);
+		var location = dataContext.Set<Location>().FirstOrDefault(x => x.Id == dto.LocationId);
 
 		if (table == null)
 		{
@@ -108,9 +131,17 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 			return BadRequest("Invalid Location");
 		}
 
+
+		var userName = User.Identity?.Name
+			?? User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
+
+		if (userName == null)
+			return Unauthorized();
+
 		var Order = new Order
 		{
 			UserId = userId.Value,
+			UserName = userName,
 			LocationId = dto.LocationId,
 			TableId = dto.TableId,
 			Total = total,
@@ -140,6 +171,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 		}
 
 		Order.UserId = dto.UserId;
+		Order.UserName = dto.UserName;
 		Order.LocationId = dto.LocationId;
 		Order.TableId = dto.TableId;
 		Order.Total = dto.Total;

@@ -1,5 +1,5 @@
 // src/types.ts
-export interface Item {
+export interface ItemGetDto {
   id: number;
   name: string;
   price: number;
@@ -10,31 +10,34 @@ export interface Item {
   ingredients: number[];
 }
 
-export interface CartItem {
+export interface CartItemGetDto {
   id: number;
   name: string;
   price: number;
   quantity: number;
 }
 
-export interface Location {
+export type UserGetDto = {
+    id: number;
+    userName: string;
+    roles: string[];
+}
+
+export type IngredientGetDto = {
   id: number;
   name: string;
-  address: string;
 }
 
-export interface Order {
+export type OrderGetDto = {
   id: number;
-  userId: number;
-  locationId: number;
-  tableId: number;
+  userName: string;
   total: number;
   items: number[];
-  createdAt: string;
+  userId: number;
 }
 
-export interface User {
+export type TableGetDto = {
   id: number;
-  username: string;
-  roles: string[];
+  isOccupied: boolean;
+  isReserved: boolean;
 }

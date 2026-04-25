@@ -1,53 +1,59 @@
 import { Button } from "@mantine/core";
 import "../App.css";
-import type { Order, Item } from "../types";
-import { axiosInstance } from "../config/axios";
-import { useEffect } from "react";
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-}
+import type { CartItemGetDto, UserGetDto } from "../types";
 
 interface CartProps {
-  cart: CartItem[];
+  cart: CartItemGetDto[];
   clearCart: () => void;
+  currentUser: UserGetDto | null;
 }
 
-const Cart = ({ cart, clearCart }: CartProps) => {
+const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const placeOrder = async () => {
-    const orderPayload = {
-      userId: 1,
-      locationId: 1,
-      tableId: 1,
-      items: cart.flatMap((item) => Array(item.quantity).fill(item.id)),
-      total,
-    };
-
-    useEffect(() => {
-      axiosInstance
-        .post("/orders", orderPayload)
-        .catch((err) => console.error("Failed to post order:", err));
-    }, []);
-    
-    clearCart();
+const placeOrder = async () => {
+  if(!currentUser) {
+    alert("Please log in before placing an order.")
+    return;
+  }
+  const orderPayload = {
+    userId: currentUser?.id,
+    userName: currentUser.userName,
+    locationId: 1,
+    tableId: 1,
+    items: cart.flatMap((item) => Array(item.quantity).fill(item.id)),
+    total,
   };
+
+  try {
+    const res = await fetch("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderPayload),
+    });
+
+    if (!res.ok) throw new Error("Order failed");
+    clearCart();
+  } catch (err) {
+    console.error(err);
+  }
+};
   return (
     <div>
       <h2>Cart</h2>
       {cart.map((item) => (
         <p key={item.id}>
-          {item.name} x{item.quantity} — $
-          {(item.price * item.quantity).toFixed(2)}
+          {item.name} x{item.quantity} — ${(item.price / 100 * item.quantity).toFixed(2)}
         </p>
+        // {item.selectedIngredients?.length > 0 && (
+        //   <ul>
+        //     {item.selectedIngredients.map((ingredient) => (
+        //       <li key={ingredient.id}>{ingredient.name}</li>
+        //     ))}
+        //   </ul>
+        // )}
       ))}
-      <p>
-        <strong>Total: ${total.toFixed(2)}</strong>
-      </p>
+      <p><strong>Total: ${(total / 100).toFixed(2)}</strong></p>
       <Button onClick={placeOrder} disabled={cart.length === 0}>
         Place Order
       </Button>

@@ -1,16 +1,11 @@
 import { Group, Text, Flex } from "@mantine/core";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Navbar.css";
-
-type CurrentUser = {
-  id: number;
-  userName: string;
-  roles: string[];
-};
+import type { UserGetDto } from "../types";
 
 type NavbarProps = {
-  currentUser: CurrentUser | null;
-  setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUser | null>>;
+  currentUser: UserGetDto | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<UserGetDto | null>>;
 };
 
 function Navbar({ currentUser, setCurrentUser }: NavbarProps) {

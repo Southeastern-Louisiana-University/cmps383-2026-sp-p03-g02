@@ -1,15 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
-
-type CurrentUser = {
-  id: number;
-  userName: string;
-  roles: string[];
-};
+import type { UserGetDto } from "../types";
 
 type LoginProps = {
-  setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUser | null>>;
+  setCurrentUser: React.Dispatch<React.SetStateAction<UserGetDto | null>>;
 };
 
 const Login = ({ setCurrentUser }: LoginProps) => {
@@ -37,7 +32,7 @@ const Login = ({ setCurrentUser }: LoginProps) => {
       });
 
       if (response.ok) {
-        const data: CurrentUser = await response.json();
+        const data: UserGetDto = await response.json();
         setCurrentUser(data);
         navigate("/");
       } else {
