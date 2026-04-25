@@ -1,9 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Selu383.SP26.Api.Data;
+using Selu383.SP26.Api.Extensions;
 using Selu383.SP26.Api.Features.Auth;
 using Selu383.SP26.Api.Features.Menu;
+using Selu383.SP26.Api.Features.Tables;
 using Selu383.SP26.Api.Features.Orders;
+using Selu383.SP26.Api.Migrations;
+using Selu383.SP26.Api.Features.Locations;
 
 namespace Selu383.SP26.Api.Controllers;
 
@@ -15,6 +20,8 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 	public IQueryable<OrderDto> GetAll()
 	{
 		return dataContext.Set<Order>()
+			.Include(x => x.OrderItem)
+			.Where(x => x.UserId == User.GetCurrentUserId())
 			.Select(x => new OrderDto
 			{
 				Id = x.Id,
@@ -23,6 +30,8 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 				TableId = x.TableId,
 				Total = x.Total,
 				Items = x.Items,
+				CreatedAt = x.CreatedAt,
+				OrderItem = x.OrderItem
 			});
 	}
 
@@ -49,17 +58,64 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 	}
 
 	[HttpPost]
-	[Authorize(Roles = RoleNames.Admin)]
 	public ActionResult<OrderDto> Create(OrderDto dto)
 	{
+		var userId = User.GetCurrentUserId();
+		if (userId == null)
+		{
+			return Unauthorized();
+		}
+
+		var orderItems = new List<OrderItem>();
+		decimal total = 0;
+
+		var Items = dataContext.Set<Item>();
+
+		foreach (var itemDto in dto.OrderItem)
+		{
+			var item = Items.FirstOrDefault(x => x.Id == itemDto.ItemId);
+
+			if (item == null)
+			{
+				return BadRequest("Invalid Item");
+			}
+
+			total += item.Price;
+
+			orderItems.Add(new OrderItem
+			{
+				Id = itemDto.Id,
+				ItemId = itemDto.ItemId,
+				ItemName = item.Name,
+				Modifications = itemDto.Modifications
+			});
+		}
+
+
+		var Tables = dataContext.Set<Table>();
+		var Locations = dataContext.Set<Location>();
+
+		var table = Tables.FirstOrDefault(x => x.Id == dto.TableId);
+		var location = Locations.FirstOrDefault(x => x.Id == dto.LocationId);
+
+		if (table == null)
+		{
+			return BadRequest("Invalid Table");
+		}
+
+		if (location == null)
+		{
+			return BadRequest("Invalid Location");
+		}
 
 		var Order = new Order
 		{
-			UserId = dto.UserId,
+			UserId = userId.Value,
 			LocationId = dto.LocationId,
 			TableId = dto.TableId,
-			Total = dto.Total,
+			Total = total,
 			Items = dto.Items,
+			OrderItem = orderItems
 		};
 
 		dataContext.Set<Order>().Add(Order);
