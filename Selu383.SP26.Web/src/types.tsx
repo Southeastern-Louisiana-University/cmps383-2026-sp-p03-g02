@@ -30,6 +30,7 @@ export type IngredientGetDto = {
 
 export type OrderGetDto = {
   id: number;
+  userName: string;
   total: number;
   items: number[];
   userId: number;

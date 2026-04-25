@@ -8,7 +8,7 @@ import "../App.css";
 import type { ItemGetDto, IngredientGetDto } from "../types";
 
 interface MenuProps {
-  addToCart: (item: ItemGetDto) => void;
+  addToCart: (item: CartItem) => void;
 }
 
 interface CartItem extends ItemGetDto {
@@ -71,7 +71,7 @@ const Menu = ({ addToCart }: MenuProps) => {
 
   return (
     <div>
-      <Modal opened={opened} onClose={close} title={selectedItem?.name} centered>
+  <Modal opened={opened} onClose={close} title={selectedItem?.name} centered withinPortal>
         <Text mb="sm">{selectedItem?.description}</Text>
         <Badge color="blue" mb="md">
           {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format((selectedItem?.price ?? 0) / 100 )}
@@ -88,10 +88,7 @@ const Menu = ({ addToCart }: MenuProps) => {
           color="green"
           fullWidth
           mt="md"
-          onClick={() => {
-            if (selectedItem) addToCart(selectedItem);
-            close();
-          }}
+          onClick={handleAddToCart}
         >
           Add to Cart
         </Button>

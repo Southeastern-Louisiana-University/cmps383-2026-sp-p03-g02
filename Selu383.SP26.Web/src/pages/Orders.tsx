@@ -29,7 +29,7 @@ const Orders = ({ currentUser }: OrderProps) => {
         <Group justify="space-between" align="center" mt="md">
           <p></p>
           <div>
-            <text>{order.userId}</text>
+            <text>{order.userName}</text>
           </div>
           <Badge color="blue">
             {new Intl.NumberFormat("en-US", {

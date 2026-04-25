@@ -19,6 +19,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 			{
 				Id = x.Id,
 				UserId = x.UserId,
+				UserName = x.UserName,
 				LocationId = x.LocationId,
 				TableId = x.TableId,
 				Total = x.Total,
@@ -41,6 +42,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 		{
 			Id = result.Id,
 			UserId = result.UserId,
+			UserName = result.UserName,
 			LocationId = result.LocationId,
 			TableId = result.TableId,
 			Total = result.Total,
@@ -56,6 +58,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 		var Order = new Order
 		{
 			UserId = dto.UserId,
+			UserName = dto.UserName,
 			LocationId = dto.LocationId,
 			TableId = dto.TableId,
 			Total = dto.Total,
@@ -84,6 +87,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 		}
 
 		Order.UserId = dto.UserId;
+		Order.UserName = dto.UserName;
 		Order.LocationId = dto.LocationId;
 		Order.TableId = dto.TableId;
 		Order.Total = dto.Total;

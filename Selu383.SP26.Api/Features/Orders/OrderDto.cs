@@ -8,7 +8,8 @@ public class OrderDto
 {
 	public int Id { get; set; }
 	public int UserId { get; set; }
-	public int LocationId { get; set; }
+	public string UserName { get; set; } = string.Empty;
+    public int LocationId { get; set; }
 	public int TableId { get; set; }
 	public decimal Total { get; set; }
 	public int[] Items { get; set; } = new int[] { };
