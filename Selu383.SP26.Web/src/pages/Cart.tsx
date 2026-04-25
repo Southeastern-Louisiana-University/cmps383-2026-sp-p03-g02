@@ -11,39 +11,53 @@ interface CartProps {
 const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-const placeOrder = async () => {
-  if(!currentUser) {
-    alert("Please log in before placing an order.")
-    return;
-  }
-  const orderPayload = {
-    userId: currentUser?.id,
-    userName: currentUser.userName,
-    locationId: 1,
-    tableId: 1,
-    items: cart.flatMap((item) => Array(item.quantity).fill(item.id)),
-    total,
+  const placeOrder = async () => {
+    if (!currentUser) {
+      alert("Please log in before placing an order.");
+      return;
+    }
+
+    const orderPayload = {
+      locationId: 1,
+      tableId: 1,
+      items: [], // not needed anymore since we're sending orderItem
+      orderItem: cart.flatMap((item) =>
+        Array.from({ length: item.quantity }, () => ({
+          itemId: item.id,
+          modifications: item.modifications ?? "",
+        })),
+      ),
+    };
+
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(orderPayload),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        console.error("Order failed:", err);
+        alert("Order failed: " + err);
+        return;
+      }
+
+      clearCart();
+      alert("Order placed!");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  try {
-    const res = await fetch("/api/orders", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(orderPayload),
-    });
-
-    if (!res.ok) throw new Error("Order failed");
-    clearCart();
-  } catch (err) {
-    console.error(err);
-  }
-};
   return (
     <div>
       <h2>Cart</h2>
       {cart.map((item) => (
         <p key={item.id}>
-          {item.name} x{item.quantity} — ${(item.price / 100 * item.quantity).toFixed(2)}
+          {item.name} x{item.quantity} — $
+          {((item.price / 100) * item.quantity).toFixed(2)}
         </p>
         // {item.selectedIngredients?.length > 0 && (
         //   <ul>
@@ -53,7 +67,9 @@ const placeOrder = async () => {
         //   </ul>
         // )}
       ))}
-      <p><strong>Total: ${(total / 100).toFixed(2)}</strong></p>
+      <p>
+        <strong>Total: ${(total / 100).toFixed(2)}</strong>
+      </p>
       <Button onClick={placeOrder} disabled={cart.length === 0}>
         Place Order
       </Button>

@@ -2,18 +2,20 @@ import { Badge, Card, Flex, Group } from "@mantine/core";
 import "../App.css";
 import { useState, useEffect } from "react";
 import type { OrderGetDto, ItemGetDto, UserGetDto } from "../types";
+import { Link } from "react-router-dom";
 
 interface OrderProps {
-    currentUser: UserGetDto | null;
-  }
+  currentUser: UserGetDto | null;
+}
 
 const Orders = ({ currentUser }: OrderProps) => {
   const [orders, setOrders] = useState<OrderGetDto[]>([]);
   const [items, setItems] = useState<ItemGetDto[]>([]);
- 
-  const userOrders = currentUser?.roles[0] === "Admin" ? orders : orders.filter(
-    (order) => order.userId == currentUser?.id
-  )
+
+  const userOrders =
+    currentUser?.roles[0] === "Admin"
+      ? orders
+      : orders.filter((order) => order.userId == currentUser?.id);
 
   const listOrders = userOrders.map((order) => {
     return (
@@ -41,20 +43,12 @@ const Orders = ({ currentUser }: OrderProps) => {
         <div style={{ textAlign: "left" }}>
           <h4>Items:</h4>
           <Flex direction="column">
-            {order.items.map((itemId, index) => {
-              const item = items.find((i) => i.id === itemId);
-              return (
-                <p key={`${itemId}-${index}`}>
-                  {item ? item.name : "Unknown Item"}{" "}
-                  {item
-                    ? new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      }).format(item.price / 100)
-                    : ""}
-                </p>
-              );
-            })}
+            {order.orderItem.map((oi, index) => (
+              <p key={`${oi.itemId}-${index}`}>
+                {oi.itemName}{" "}
+                {oi.modifications && <em> — {oi.modifications}</em>}
+              </p>
+            ))}
           </Flex>
         </div>
       </Card>
@@ -62,13 +56,7 @@ const Orders = ({ currentUser }: OrderProps) => {
   });
 
   useEffect(() => {
-    fetch("/api/orders")
-      .then((res) => res.json())
-      .then((res) => {
-        setOrders(res);
-      });
-
-    fetch("/api/users")
+    fetch("/api/orders", { credentials: "include" })
       .then((res) => res.json())
       .then((res) => {
         setOrders(res);
@@ -84,7 +72,17 @@ const Orders = ({ currentUser }: OrderProps) => {
   return (
     <div>
       <h1>Orders</h1>
-      {listOrders}
+      {userOrders.length === 0 ? (
+        <p>
+          You haven't placed any orders yet. Check out our{" "}
+          <Link to="/menu" className="title">
+            menu
+          </Link>
+          !
+        </p>
+      ) : (
+        listOrders
+      )}
     </div>
   );
 };
