@@ -22,6 +22,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 
 		return dataContext.Set<Order>()
 			.Include(x => x.OrderItem)
+			.OrderByDescending(x => x.CreatedAt)
 			.Select(x => new OrderDto
 			{
 				Id = x.Id,
@@ -44,6 +45,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 		return dataContext.Set<Order>()
 			.Include(x => x.OrderItem)
 			.Where(x => x.UserId == userId)
+			.OrderByDescending(x => x.CreatedAt)
 			.Select(x => new OrderDto
 			{
 				Id = x.Id,

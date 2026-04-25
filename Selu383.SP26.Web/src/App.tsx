@@ -62,7 +62,7 @@ function App() {
         <AppShell.Main style={{ paddingLeft: 100, paddingRight: 100 }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/menu" element={<Menu addToCart={addToCart} />} />
+            <Route path="/menu" element={<Menu addToCart={addToCart} currentUser={currentUser}/>} />
             <Route path="/cart" element={<Cart cart={cart} clearCart={clearCart} currentUser={currentUser} />} />
             <Route path="/orders" element={<Orders currentUser={currentUser}/>} />
             <Route path="/reservations" element={<Reservations />} />

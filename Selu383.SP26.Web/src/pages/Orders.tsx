@@ -17,6 +17,8 @@ const Orders = ({ currentUser }: OrderProps) => {
       ? orders
       : orders.filter((order) => order.userId == currentUser?.id);
 
+    console.log(currentUser?.roles[0] === "Admin");
+    console.log("Menu currentUser:", currentUser);
   const listOrders = userOrders.map((order) => {
     return (
       <Card
@@ -29,10 +31,17 @@ const Orders = ({ currentUser }: OrderProps) => {
         key={order.id}
       >
         <Group justify="space-between" align="center" mt="md">
-          <p></p>
           <div>
             <text>{order.userName}</text>
           </div>
+          <Badge color="gray">
+            {new Intl.DateTimeFormat("en-US", {
+              month: "short",
+              day: "numeric",
+              hour: "numeric",
+              minute: "2-digit",
+            }).format(new Date(order.createdAt + "Z"))}
+          </Badge>
           <Badge color="blue">
             {new Intl.NumberFormat("en-US", {
               style: "currency",
@@ -40,6 +49,7 @@ const Orders = ({ currentUser }: OrderProps) => {
             }).format(order.total / 100)}
           </Badge>
         </Group>
+
         <div style={{ textAlign: "left" }}>
           <h4>Items:</h4>
           <Flex direction="column">
