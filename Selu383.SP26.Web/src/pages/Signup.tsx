@@ -3,15 +3,16 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "./Login.css";
 import type { UserGetDto } from "../types";
 
-type LoginProps = {
+type SignupProps = {
   setCurrentUser: React.Dispatch<React.SetStateAction<UserGetDto | null>>;
 };
 
-const Login = ({ setCurrentUser }: LoginProps) => {
+const Signup = ({ setCurrentUser }: SignupProps) => {
   const navigate = useNavigate();
 
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState([]);
   const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -19,7 +20,7 @@ const Login = ({ setCurrentUser }: LoginProps) => {
     setError("");
 
     try {
-      const response = await fetch("/api/authentication/login", {
+      const response = await fetch("/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,13 +29,12 @@ const Login = ({ setCurrentUser }: LoginProps) => {
         body: JSON.stringify({
           userName,
           password,
+          roles: ["User"],
         }),
       });
 
       if (response.ok) {
-        const data: UserGetDto = await response.json();
-        setCurrentUser(data);
-        navigate("/");
+        navigate("/login");
       } else {
         setError("Invalid username or password.");
       }
@@ -46,8 +46,10 @@ const Login = ({ setCurrentUser }: LoginProps) => {
 
   return (
     <div className="login-page">
-      <h1>Login</h1>
-      <p className="subtitle">Please log in to your account</p>
+      <h1>Signup</h1>
+      <p className="subtitle">
+        Please fill in the following information to create your account
+      </p>
 
       <form className="login-card" onSubmit={handleLogin}>
         <label htmlFor="userName">Username</label>
@@ -73,17 +75,17 @@ const Login = ({ setCurrentUser }: LoginProps) => {
         {error && <p className="login-error">{error}</p>}
 
         <button className="login-btn" type="submit">
-          Login
+          Sign up
         </button>
       </form>
       <p>
-        Don't have an account?
-        <NavLink to="/signup" className="login-link">
-          Sign up
+        Already have an account?
+        <NavLink to="/login" className="login-link">
+          Log in
         </NavLink>
       </p>
     </div>
   );
 };
 
-export default Login;
+export default Signup;

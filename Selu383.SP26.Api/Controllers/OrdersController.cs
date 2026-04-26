@@ -1,14 +1,15 @@
+using System.Net.NetworkInformation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Selu383.SP26.Api.Data;
 using Selu383.SP26.Api.Extensions;
 using Selu383.SP26.Api.Features.Auth;
-using Selu383.SP26.Api.Features.Menu;
-using Selu383.SP26.Api.Features.Tables;
-using Selu383.SP26.Api.Features.Orders;
-using Selu383.SP26.Api.Migrations;
 using Selu383.SP26.Api.Features.Locations;
+using Selu383.SP26.Api.Features.Menu;
+using Selu383.SP26.Api.Features.Orders;
+using Selu383.SP26.Api.Features.Tables;
+using Selu383.SP26.Api.Migrations;
 
 namespace Selu383.SP26.Api.Controllers;
 
@@ -33,7 +34,8 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 				Total = x.Total,
 				Items = x.Items,
 				CreatedAt = x.CreatedAt,
-				OrderItem = x.OrderItem
+				OrderItem = x.OrderItem,
+				status = x.status
 			});
 	}
 
@@ -56,7 +58,8 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 				Total = x.Total,
 				Items = x.Items,
 				CreatedAt = x.CreatedAt,
-				OrderItem = x.OrderItem
+				OrderItem = x.OrderItem,
+				status = x.status
 			});
 	}
 
@@ -80,6 +83,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 			TableId = result.TableId,
 			Total = result.Total,
 			Items = result.Items,
+			status = result.status
 		});
 	}
 
@@ -148,7 +152,8 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 			TableId = dto.TableId,
 			Total = total,
 			Items = dto.Items,
-			OrderItem = orderItems
+			OrderItem = orderItems,
+			status = dto.status
 		};
 
 		dataContext.Set<Order>().Add(Order);
@@ -178,6 +183,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 		Order.TableId = dto.TableId;
 		Order.Total = dto.Total;
 		Order.Items = dto.Items;
+		Order.status = dto.status;
 
 		dataContext.SaveChanges();
 

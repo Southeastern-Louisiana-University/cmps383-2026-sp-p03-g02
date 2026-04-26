@@ -24,6 +24,14 @@ export type UserGetDto = {
     roles: string[];
 }
 
+export type LocationGetDto = {
+    id: number;
+    name: string;
+    address: string;
+    tableCount: number;
+    managerId: number;
+}
+
 export type IngredientGetDto = {
   id: number;
   name: string;
@@ -44,6 +52,7 @@ export type OrderGetDto = {
     modifications: string;
   }[];
   createdAt: string;
+  status: string;
 }
 
 export type TableGetDto = {

@@ -18,7 +18,6 @@ public class UsersController : ControllerBase
 	}
 
 	[HttpPost]
-	[Authorize(Roles = RoleNames.Admin)]
 	public async Task<ActionResult<UserDto>> Create(CreateUserDto dto)
 	{
 		using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
@@ -30,7 +29,7 @@ public class UsersController : ControllerBase
 		var createResult = await userManager.CreateAsync(newUser, dto.Password);
 		if (!createResult.Succeeded)
 		{
-			return BadRequest("Could not create user");
+			return BadRequest("Could not create user. Try using a stronger password");
 		}
 
 		try
