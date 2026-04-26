@@ -1,7 +1,7 @@
 import { Badge, Button, Card, Flex, Group } from "@mantine/core";
 import "../App.css";
 import { useState, useEffect } from "react";
-import type { OrderGetDto, ItemGetDto, UserGetDto } from "../types";
+import type { OrderGetDto, UserGetDto } from "../types";
 import { Link } from "react-router-dom";
 
 interface OrderProps {
@@ -10,8 +10,6 @@ interface OrderProps {
 
 const Orders = ({ currentUser }: OrderProps) => {
   const [orders, setOrders] = useState<OrderGetDto[]>([]);
-  const [items, setItems] = useState<ItemGetDto[]>([]);
-  const [selectedOrder, setSelectedOrder] = useState<OrderGetDto | null>(null);
 
   const updateOrderStatus = async (orderId: number, status: string) => {
     const order = orders.find((o) => o.id === orderId);
@@ -172,11 +170,6 @@ const Orders = ({ currentUser }: OrderProps) => {
         setOrders(res);
       });
 
-    fetch("/api/items")
-      .then((res) => res.json())
-      .then((res) => {
-        setItems(res);
-      });
   }, []);
 
   return (

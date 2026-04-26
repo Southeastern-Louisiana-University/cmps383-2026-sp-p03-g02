@@ -121,10 +121,6 @@ const Menu = ({ addToCart, currentUser }: MenuProps) => {
     close();
   };
 
-  const availableIngredients = ingredients.filter((ing) =>
-    selectedItem?.ingredients?.includes(ing.id),
-  );
-
   const types = ["All", ...new Set(items.map((item) => item.type))];
 
   const filteredItems =
@@ -137,21 +133,6 @@ const Menu = ({ addToCart, currentUser }: MenuProps) => {
       + Add Menu Item
     </Button>
   ) : null;
-
-  const addItems = () => {
-    if (!selectedItem) return;
-
-    const selectedIngredients = ingredients.filter((ing) =>
-      selectedIngredientIds.includes(ing.id),
-    );
-
-    addToCart({
-      ...selectedItem,
-        modifications: selectedIngredients.map((ing) => ing.name).join(", + "),
-    });
-
-    close();
-  };
 
   useEffect(() => {
     fetch("/api/items")
