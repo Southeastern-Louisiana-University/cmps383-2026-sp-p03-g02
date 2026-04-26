@@ -91,7 +91,7 @@ const Menu = ({ addToCart, currentUser }: MenuProps) => {
       credentials: "include",
       body: JSON.stringify({
         ...editItem,
-        price: Math.round(parseFloat(editItem.price) * 100), // back to cents
+        price: Math.round(parseFloat(editItem.price) * 100), 
       }),
     });
 

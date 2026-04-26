@@ -57,7 +57,7 @@ function App() {
     <div>
       <AppShell header={{ height: 70 }} footer={{ height: 100 }}>
         <AppShell.Header>
-          <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
+          <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} cart={cart} />
         </AppShell.Header>
         <AppShell.Main style={{ paddingLeft: 100, paddingRight: 100 }}>
           <Routes>
