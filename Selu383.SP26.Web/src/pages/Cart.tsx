@@ -35,7 +35,7 @@ const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
 
     const orderPayload = {
       locationId: parseInt(locationId ?? "1"),
-      tableId: orderType === "table" ? parseInt(tableId) : 1, 
+      tableId: orderType === "table" ? parseInt(tableId) : 1,
       items: [],
       orderItem: cart.flatMap((item) =>
         Array.from({ length: item.quantity }, () => ({
@@ -88,12 +88,21 @@ const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
             </Center>
           ) : null}
           <Flex direction="column" gap="xs">
-            {cart.map((item) => (
-              <p key={item.id}>
-                {item.name} x{item.quantity} — $
-                {((item.price / 100) * item.quantity).toFixed(2)}
-              </p>
-            ))}
+            {cart.map((item) => {
+              return (
+                <ul key={item.id} style={{ textAlign: "left", margin: 0 }}>
+                  <li>
+                    <p style={{ margin: 0 }}>
+                      {item.name} x{item.quantity} — $
+                      {((item.price / 100) * item.quantity).toFixed(2)}
+                    </p>
+                    <p style={{ margin: 0 }}>
+                      {item.modifications ? ` (+ ${item.modifications})` : ""}
+                    </p>
+                  </li>
+                </ul>
+              );
+            })}
           </Flex>
         </Flex>
 
