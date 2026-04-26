@@ -1,7 +1,7 @@
 import { Badge, Button, Card, Flex, Group } from "@mantine/core";
 import "../App.css";
 import { useState, useEffect } from "react";
-import type { OrderGetDto, ItemGetDto, UserGetDto } from "../types";
+import type { OrderGetDto, UserGetDto } from "../types";
 import { Link } from "react-router-dom";
 
 interface OrderProps {
@@ -10,7 +10,6 @@ interface OrderProps {
 
 const Orders = ({ currentUser }: OrderProps) => {
   const [orders, setOrders] = useState<OrderGetDto[]>([]);
-  const [items, setItems] = useState<ItemGetDto[]>([]);
 
   const updateOrderStatus = async (orderId: number, status: string) => {
     const order = orders.find((o) => o.id === orderId);
@@ -29,6 +28,21 @@ const Orders = ({ currentUser }: OrderProps) => {
       );
     } else {
       alert("Failed to update order status");
+    }
+  };
+
+  const handleDeleteOrder = async (orderId: number) => {
+    if (!window.confirm("Are you sure you want to delete this order?")) return;
+
+    const res = await fetch(`/api/orders/${orderId}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    if (res.ok) {
+      setOrders((prev) => prev.filter((o) => o.id !== orderId));
+    } else {
+      alert("Failed to delete order");
     }
   };
 
@@ -108,17 +122,41 @@ const Orders = ({ currentUser }: OrderProps) => {
             >
               Fulfil
             </Button>
+            <Button
+              color="red"
+              variant="filled"
+              onClick={() => handleDeleteOrder(order.id)}
+            >
+              Delete Order
+            </Button>
           </Flex>
         ) : null}
         <div style={{ textAlign: "left" }}>
           <h4>Items:</h4>
           <Flex direction="column">
-            {order.orderItem.map((oi, index) => (
-              <p key={`${oi.itemId}-${index}`}>
-                {oi.itemName}{" "}
-                {oi.modifications && <em> — {oi.modifications}</em>}
-              </p>
-            ))}
+            {order.orderItem.map((oi, index) => {
+              const ingredients = oi.ingredients ?? [];
+
+              return (
+                <div
+                  key={`${oi.itemId}-${index}`}
+                  style={{ marginBottom: "0.75rem" }}
+                >
+                  <p>
+                    {oi.itemName}
+                    {oi.modifications && <em> — {oi.modifications}</em>}
+                  </p>
+
+                  {ingredients.length > 0 && (
+                    <ul style={{ marginTop: "0.25rem", marginLeft: "1.5rem" }}>
+                      {ingredients.map((ingredient) => (
+                        <li key={ingredient.id}>{ingredient.name}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              );
+            })}
           </Flex>
         </div>
       </Card>
@@ -132,11 +170,6 @@ const Orders = ({ currentUser }: OrderProps) => {
         setOrders(res);
       });
 
-    fetch("/api/items")
-      .then((res) => res.json())
-      .then((res) => {
-        setItems(res);
-      });
   }, []);
 
   return (

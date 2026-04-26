@@ -23,7 +23,7 @@ interface MenuProps {
 }
 
 interface CartItem extends ItemGetDto {
-  selectedIngredients?: IngredientGetDto[];
+  modifications?: string;
 }
 
 function Seasonal({ isSeasonal }: { isSeasonal: boolean }) {
@@ -111,17 +111,15 @@ const Menu = ({ addToCart, currentUser }: MenuProps) => {
       selectedIngredientIds.includes(ing.id),
     );
 
+    const modifications = selectedIngredients.map((ing) => ing.name).join(", ");
+
     addToCart({
       ...selectedItem,
-      selectedIngredients,
+      modifications,
     });
 
     close();
   };
-
-  const availableIngredients = ingredients.filter((ing) =>
-    selectedItem?.ingredients?.includes(ing.id),
-  );
 
   const types = ["All", ...new Set(items.map((item) => item.type))];
 
@@ -309,22 +307,21 @@ const Menu = ({ addToCart, currentUser }: MenuProps) => {
             <Text fw={500} mb="xs">
               Ingredients:
             </Text>
-            <Checkbox.Group
-              value={selectedIngredientIds.map(String)}
-              onChange={(values) =>
-                setSelectedIngredientIds(values.map((v) => Number(v)))
-              }
-            >
-              <Stack gap="xs" mb="md">
-                {availableIngredients.map((ing) => (
-                  <Checkbox
-                    key={ing.id}
-                    value={String(ing.id)}
-                    label={ing.name}
-                  />
-                ))}
-              </Stack>
-            </Checkbox.Group>
+            <SimpleGrid cols={2}>
+              {ingredients.map((ingredient) => (
+                <Checkbox
+                  label={ingredient.name}
+                  checked={selectedIngredientIds.includes(ingredient.id)}
+                  onChange={(event) => {
+                    if (event.currentTarget.checked) {
+                      setSelectedIngredientIds((prev) => [...prev, ingredient.id]);
+                    } else{
+                      setSelectedIngredientIds((prev) => prev.filter((id) => id !== ingredient.id))
+                    }
+                  }}
+                />
+              ))}
+            </SimpleGrid>
             <Button color="green" fullWidth mt="md" onClick={handleAddToCart}>
               Add to Cart
             </Button>

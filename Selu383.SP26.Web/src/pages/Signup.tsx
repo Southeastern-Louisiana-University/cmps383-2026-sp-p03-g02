@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Login.css";
-import type { UserGetDto } from "../types";
+// import type { UserGetDto } from "../types";
 
-type SignupProps = {
-  setCurrentUser: React.Dispatch<React.SetStateAction<UserGetDto | null>>;
-};
+// type SignupProps = {
+//   setCurrentUser: React.Dispatch<React.SetStateAction<UserGetDto | null>>;
+// };
 
-const Signup = ({ setCurrentUser }: SignupProps) => {
+const Signup = () => {
   const navigate = useNavigate();
 
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState([]);
   const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {

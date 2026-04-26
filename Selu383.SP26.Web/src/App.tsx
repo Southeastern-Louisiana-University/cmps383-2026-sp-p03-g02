@@ -70,7 +70,7 @@ function App() {
             <Route path="/locations" element={<Locations />} /> 
             <Route path="/locations/:locationId" element={<Reservations />} />
             <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />} />
-            <Route path="/signup" element={<Signup setCurrentUser={setCurrentUser} />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AppShell.Main>

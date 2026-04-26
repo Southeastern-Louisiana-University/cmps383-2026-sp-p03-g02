@@ -50,6 +50,7 @@ export type OrderGetDto = {
     itemId: number;
     itemName: string;
     modifications: string;
+    ingredients?: IngredientGetDto[];
   }[];
   createdAt: string;
   status: string;
