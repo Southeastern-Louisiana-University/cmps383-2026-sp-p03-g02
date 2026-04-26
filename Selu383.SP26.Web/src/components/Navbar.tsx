@@ -1,4 +1,4 @@
-import { Group, Text, Button, Flex } from "@mantine/core";
+import { Group, Text, Flex } from "@mantine/core";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 

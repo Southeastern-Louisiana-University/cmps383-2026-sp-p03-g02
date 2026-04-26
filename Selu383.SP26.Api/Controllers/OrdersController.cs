@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Selu383.SP26.Api.Data;
 using Selu383.SP26.Api.Features.Auth;
+using Selu383.SP26.Api.Features.Menu;
 using Selu383.SP26.Api.Features.Orders;
 
 namespace Selu383.SP26.Api.Controllers;
@@ -21,6 +22,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 				LocationId = x.LocationId,
 				TableId = x.TableId,
 				Total = x.Total,
+				Items = x.Items,
 			});
 	}
 
@@ -42,6 +44,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 			LocationId = result.LocationId,
 			TableId = result.TableId,
 			Total = result.Total,
+			Items = result.Items,
 		});
 	}
 
@@ -56,6 +59,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 			LocationId = dto.LocationId,
 			TableId = dto.TableId,
 			Total = dto.Total,
+			Items = dto.Items,
 		};
 
 		dataContext.Set<Order>().Add(Order);
@@ -83,6 +87,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 		Order.LocationId = dto.LocationId;
 		Order.TableId = dto.TableId;
 		Order.Total = dto.Total;
+		Order.Items = dto.Items;
 
 		dataContext.SaveChanges();
 

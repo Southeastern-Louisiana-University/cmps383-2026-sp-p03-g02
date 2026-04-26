@@ -11,5 +11,5 @@ public class TableDto
 
 	public bool IsOccupied { get; set; } = false;
 	public bool IsReserved { get; set; } = false;
-	public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+	//public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }
