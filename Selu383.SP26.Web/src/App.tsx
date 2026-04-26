@@ -12,6 +12,7 @@ import "@mantine/carousel/styles.css";
 import { useState, useEffect } from "react";
 import { type ItemGetDto, type CartItemGetDto, type UserGetDto } from "./types";
 import Login from "./pages/Login.tsx";
+import Signup from "./pages/Signup.tsx";
 
 function App() {
   const [cart, setCart] = useState<CartItemGetDto[]>([]);
@@ -67,6 +68,7 @@ function App() {
             <Route path="/orders" element={<Orders currentUser={currentUser}/>} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />} />
+            <Route path="/signup" element={<Signup setCurrentUser={setCurrentUser} />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AppShell.Main>
