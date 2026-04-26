@@ -53,12 +53,26 @@ const Orders = ({ currentUser }: OrderProps) => {
         <div style={{ textAlign: "left" }}>
           <h4>Items:</h4>
           <Flex direction="column">
-            {order.orderItem.map((oi, index) => (
-              <p key={`${oi.itemId}-${index}`}>
-                {oi.itemName}{" "}
-                {oi.modifications && <em> — {oi.modifications}</em>}
-              </p>
-            ))}
+            {order.orderItem.map((oi, index) => {
+              const ingredients = oi.ingredients ?? [];
+
+              return (
+                <div key={`${oi.itemId}-${index}`} style={{ marginBottom: "0.75rem" }}>
+                  <p>
+                    {oi.itemName}
+                    {oi.modifications && <em> — {oi.modifications}</em>}
+                  </p>
+
+                  {ingredients.length > 0 && (
+                    <ul style={{ marginTop: "0.25rem", marginLeft: "1.5rem" }}>
+                      {ingredients.map((ingredient) => (
+                        <li key={ingredient.id}>{ingredient.name}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              );
+            })}
           </Flex>
         </div>
       </Card>
