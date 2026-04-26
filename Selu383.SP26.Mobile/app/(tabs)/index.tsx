@@ -48,7 +48,7 @@ export default function HomeScreen() {
       </ThemedView>
       <ThemedText type="subtitle">{" "}</ThemedText>
       <ThemedView style={styles.stepContainer}>
-        <Link href="/menu">
+        <Link href="/Menu">
           <Link.Trigger>
             <ThemedText type="subtitle" style = {{ color: '#274f7a', backgroundColor: '#fff5e8'}}>Or View the Full Menu</ThemedText>
           </Link.Trigger>

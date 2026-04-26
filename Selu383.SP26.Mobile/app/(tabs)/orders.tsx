@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { useCart } from '@/hooks/user-cart';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -7,8 +8,24 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Link } from 'expo-router';
 import { Assets } from '@react-navigation/elements';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-export default function HomeScreen() {
+interface MenuItem {
+  name: string;
+  img: any;
+  desc: string;
+  price: number;
+  type: 'drink' | 'food';
+  quantity?: number;
+}
+
+export default function OrdersScreen() {
+  const { cart, removeFromCart } = useCart();
+
+  const totalCost = cart.reduce((sum: number, item: MenuItem) => {
+    return sum + (item.price * (item.quantity || 1));
+  }, 0);
+  
   return (
     //header layout prototype
     <ParallaxScrollView
@@ -17,22 +34,45 @@ export default function HomeScreen() {
       >
 
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="subtitle">Orders Page!</ThemedText>
+        <ThemedText type="subtitle">ur current order</ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.fullCat}>
-        {[
-          { name: 'Coffee', img: require('@/assets/images/coffer.png'), desc: 'Just a regular coffee', price: '$2.80'},
-          { name: 'Evil Coffee', img: require('@/assets/images/Dark fucked up coffee.jpg'), desc: 'coffee but no coffee', price: '$280' },
-          { name: 'Cattuccino', img: require('@/assets/images/cattuccino.png'), desc: 'cat but coffee', price: '$5.75' },
-          ].map((item, index) => (
+        {cart.length === 0 ? (
+          <ThemedText style={{ textAlign: 'center', marginTop: 20}}>
+            ur cart empty type splish ong
+          </ThemedText>
+        ) : (
+          cart.map((item: MenuItem, index: number) => (
             <ThemedView key={index} style={styles.card}>
               <Image source={item.img} style={styles.cardImage} />
-              <ThemedText style={styles.cardText}>{item.name} {item.price}</ThemedText>
-              <ThemedText type="subtitle" style={{color: '#424242', fontSize: 12}}>{item.desc}</ThemedText>
+
+              <View style={styles.textContainer}>
+                <ThemedText style={styles.cardText}>
+                  {item.name} (x{item.quantity})
+                </ThemedText>
+                <ThemedText type="subtitle" style={{color: '#424242', fontSize: 14}}>
+                  ${item.price.toFixed(2)}
+                </ThemedText>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => removeFromCart(item.name)}
+                style={styles.removeButton}
+                >
+                  <FontAwesome name="trash" size={20} color="#ff444" />
+                </TouchableOpacity>
             </ThemedView>
-          ))}
+          ))
+        )}
       </ThemedView>
+      {cart.length > 0 && (
+        <ThemedView style={styles.totalContainer}>
+          <ThemedText style={styles.totalText}>
+            Total: ${totalCost.toFixed(2)}
+          </ThemedText>
+        </ThemedView>
+      )}
     </ParallaxScrollView>
   );
 }
@@ -75,5 +115,22 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: 'absolute',
+  },
+  textContainer: {
+    flex: 1,
+  },
+  removeButton: {
+    padding: 10,
+  },
+  totalContainer: {
+    padding: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#352000',
+    alignItems: 'flex-end',
+  },
+  totalText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#5f3e00'
   },
 });
