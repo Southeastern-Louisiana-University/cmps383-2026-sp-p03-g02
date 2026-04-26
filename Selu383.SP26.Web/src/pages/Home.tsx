@@ -1,16 +1,20 @@
-import { Flex, Container, Image, Text, SimpleGrid, Box, Button, Title } from "@mantine/core";
+import { Flex, Container, Image, Text, SimpleGrid, Box, Button, Title, Stack, Card } from "@mantine/core";
 import "../App.css";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel } from "@mantine/carousel";
-import type { ItemGetDto } from "../types";
+import type { ItemGetDto, LocationGetDto } from "../types";
 
 const Home = () => {
   const [items, setItems] = useState<ItemGetDto[]>([]);
+  const [locations, setLocations] = useState<LocationGetDto[]>([]);
   const navigate = useNavigate();
   const autoplay = useRef(Autoplay({delay: 5000}));
-  
+
+  const featuredItems = items.filter(
+    (item) => item.isSeasonal === true  
+  )
 
   useEffect(() => {
     fetch("/api/items")
@@ -18,6 +22,13 @@ const Home = () => {
     .then((res) => {
     setItems(res)
     });
+
+    fetch("/api/locations")
+    .then((res) => res.json())
+    .then((res) => {
+      setLocations(res)
+    });
+
 }, [])
   
   return (
@@ -33,16 +44,15 @@ const Home = () => {
         <Box pos="relative">
             <Image 
               radius="md"
-              // fit="contain"
-              // h={200}
-              // w="auto"
               src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.HUVnLSmPwNKr4YM64h5V0QHaE8%3Fpid%3DApi&f=1&ipt=2a07171075bd07c0db76357baf68480ecfbf4729615354dc886101e87783ed04&ipo=images"
             />
           </Box>
       </SimpleGrid>
 
-      <h1>Try Some Of Our New Menu Items</h1>
+      <Stack gap="md">
+      <h1>Check out our featured items</h1>
 
+      <Box maw={700} mx="auto">
       <Carousel
         withIndicators
         height={200}
@@ -50,13 +60,12 @@ const Home = () => {
         onMouseEnter={autoplay.current.stop}
         onMouseLeave={() => autoplay.current.play()}
         slideGap="md"
-
       >
-        {items.map((item) => (
+        {featuredItems.map((item) => (
           <Carousel.Slide key={item.id}>
             <SimpleGrid cols={2}>
             <Box>
-              <Title>{item.name}</Title>
+              <Title order={2}>{item.name}</Title>
               <Text size="sm">{item.description}</Text>
               <Button 
                 type="button"
@@ -80,6 +89,30 @@ const Home = () => {
           </Carousel.Slide>
         ))}
       </Carousel>
+      </Box>
+      </Stack>
+
+      <Stack gap="lg">
+      <Title>Check availability at your nearest location</Title>
+
+      <SimpleGrid cols={3}>
+      {locations.map((location) => {
+        return (
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Stack gap="sm">
+              <Title order={3}>{location.address}</Title>
+              <Button onClick={() => {
+              navigate(`/locations/${location.id}`)
+              }}>
+              View Tables
+              </Button>
+            </Stack>
+            
+          </Card>
+        )
+      })}
+      </SimpleGrid>
+      </Stack>
     </Container>
   );
 };

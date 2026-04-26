@@ -136,21 +136,6 @@ const Menu = ({ addToCart, currentUser }: MenuProps) => {
     </Button>
   ) : null;
 
-  const addItems = () => {
-    if (!selectedItem) return;
-
-    const selectedIngredients = ingredients.filter((ing) =>
-      selectedIngredientIds.includes(ing.id),
-    );
-
-    addToCart({
-      ...selectedItem,
-      selectedIngredients,
-    });
-
-    close();
-  };
-
   useEffect(() => {
     fetch("/api/items")
       .then((res) => res.json())
