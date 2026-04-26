@@ -48,6 +48,14 @@ export type OrderGetDto = {
 
 export type TableGetDto = {
   id: number;
+  locationId: number;
   isOccupied: boolean;
   isReserved: boolean;
+}
+
+export type LocationGetDto = {
+  id: number;
+  name: string;
+  adddres: string;
+  tableCount: number;
 }

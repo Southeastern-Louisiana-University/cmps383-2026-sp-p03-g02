@@ -55,10 +55,10 @@ function Navbar({ currentUser, setCurrentUser }: NavbarProps) {
             </li>
             <li>
               <NavLink
-                to="reservations"
+                to="locations"
                 className={({ isActive }) => (isActive ? "active" : "")}
               >
-                Reservations
+                Locations
               </NavLink>
             </li>
             <li>

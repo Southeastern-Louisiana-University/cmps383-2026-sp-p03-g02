@@ -4,6 +4,7 @@ import Footer from "./components/Footer.tsx";
 import Home from "./pages/Home.tsx";
 import Menu from "./pages/Menu.tsx";
 import Orders from "./pages/Orders.tsx";
+import Locations from "./pages/Locations.tsx"
 import Reservations from "./pages/Reservations.tsx";
 import Cart from "./pages/Cart.tsx";
 import "./App.css";
@@ -65,7 +66,8 @@ function App() {
             <Route path="/menu" element={<Menu addToCart={addToCart} currentUser={currentUser}/>} />
             <Route path="/cart" element={<Cart cart={cart} clearCart={clearCart} currentUser={currentUser} />} />
             <Route path="/orders" element={<Orders currentUser={currentUser}/>} />
-            <Route path="/reservations" element={<Reservations />} />
+            <Route path="/locations" element={<Locations />} /> 
+            <Route path="/locations/:locationId" element={<Reservations />} />
             <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
