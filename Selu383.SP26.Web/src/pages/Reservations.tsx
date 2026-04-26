@@ -63,7 +63,7 @@ const Reservations = () => {
                         textAlign: "center",
                         cursor: "pointer"
                     }}>
-                        <Text>Table</Text>
+                        <Text>Table {table.id}</Text>
                         <Text>Capacity: {table.capacity}</Text>
                         <Occupied 
                             isReserved={table.isReserved}
