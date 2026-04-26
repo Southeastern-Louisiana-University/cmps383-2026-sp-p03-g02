@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
 import { Card, Text, Button, Group, SimpleGrid } from '@mantine/core';
-import type { TableGetDto } from "../types";
+import type { TableGetDto, LocationGetDto } from "../types";
 import { useParams } from "react-router-dom"
 
 const Reservations = () => { 
   const [tables, setTables] = useState<TableGetDto[]>([]);
   const { locationId } = useParams();
+  const [locations, setLocations] = useState<LocationGetDto[]>([]);
   const selectedLocationId = Number(locationId);
 
   function Occupied({ isReserved }: { isReserved: boolean }) {
@@ -22,46 +23,29 @@ const Reservations = () => {
     return "#A5D6A7";
   };
 
-  const reserveTable = async (table: TableGetDto) => {
-    const updatedTable = {
-      id: table.id,
-      locationId: table.locationId,
-      capacity: table.capacity,
-      isReserved: true,
-    }
-
-    await fetch(`/api/Tables/${table.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({updatedTable}),
-    });
-
-    updateTableState(table.id, { isReserved: true });
-  };
-
-  const updateTableState = (id: string | number, updates: Partial<TableGetDto>) => {
-    setTables((prev) =>
-      prev.map((table) =>
-        table.id === id ? { ...table, ...updates } : table
-      )
-    );
-  };
-
   const displayedTables = tables.filter(
     (table) => table.locationId === selectedLocationId
   )
 
     useEffect(() => {
-        fetch("/api/Tables")
+        fetch("/api/tables")
         .then((res) => res.json())
         .then((res) => {
         setTables(res)
         });
+
+        fetch("/api/locations")
+        .then((res) => res.json())
+        .then((res) => {
+        setLocations(res)        
+    })
   }, [])
+
+  const location = locations.find((t) => t.id === Number(locationId))
 
   return (
     <div>
-        <h1>Location {locationId}</h1>
+        <h1>{location?.address}</h1>
         <SimpleGrid cols={5}>
             {displayedTables.map((table) => {
                 const isOpen = !table.isReserved
@@ -85,7 +69,7 @@ const Reservations = () => {
                             isReserved={table.isReserved}
                         />
 
-                        {isOpen && (
+                        {/* {isOpen && (
                             <Group mt="md" justify="center">
                                 <Button 
                                     size="xs" 
@@ -94,7 +78,7 @@ const Reservations = () => {
                                     Reserve
                                 </Button>
                             </Group>
-                        )}
+                        )} */}
                     </Card>
                 )
             })}

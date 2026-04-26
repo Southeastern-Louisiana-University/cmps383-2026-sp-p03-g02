@@ -44,7 +44,7 @@ return (
         return (
             <Card key={location.id} shadow="sm" padding="lg" radius="md" withBorder>
             <Stack gap="sm">
-                <Title order={3}>{location.name}</Title>
+                <Title order={3}>{location.address}</Title>
                 <Text>Total Tables: {stats.total}</Text>
                 <Text c="green">Open: {stats.open}</Text>
                 <Text c="red">Reserved: {stats.reserved}</Text>

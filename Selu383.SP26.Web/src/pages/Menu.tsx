@@ -452,7 +452,7 @@ const Menu = ({ addToCart, currentUser }: MenuProps) => {
         </Stack>
       </Modal>
 
-      <h1>Menu Page</h1>
+      <h1>Menu</h1>
       {adminFeatures}
 
       <Group mb="md">

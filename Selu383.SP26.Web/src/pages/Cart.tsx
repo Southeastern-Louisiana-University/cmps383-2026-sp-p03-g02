@@ -1,7 +1,7 @@
 import { Button, Center, Flex, SegmentedControl, Select } from "@mantine/core";
 import "../App.css";
 import { useEffect, useState } from "react";
-import type { CartItemGetDto, LocationGetDto, UserGetDto } from "../types";
+import type { CartItemGetDto, LocationGetDto, UserGetDto, TableGetDto } from "../types";
 
 interface CartProps {
   cart: CartItemGetDto[];
@@ -12,6 +12,7 @@ interface CartProps {
 const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const [orderType, setOrderType] = useState<"table" | "pickup">("table");
+  const [tables, setTables] = useState<TableGetDto[]>([]);
   const [tableId, setTableId] = useState<string>("");
   const [locations, setLocations] = useState<LocationGetDto[]>([]);
   const [locationId, setLocationId] = useState<string | null>(null);
@@ -20,11 +21,43 @@ const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
     fetch("/api/locations")
       .then((res) => res.json())
       .then((res) => setLocations(res));
+
+    fetch("/api/tables")
+      .then((res) => res.json())
+      .then((res) => setTables(res))
   }, []);
+
+  const availableTables = tables.filter(
+    (table) => table.locationId === Number(locationId) && !table.isReserved
+  )
+
+  const reserveTable = async (id: string | number) => {
+    const table = tables.find((t) => t.id === id)
+    await fetch(`/api/tables/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...table, isReserved: true }),
+    });
+
+    updateTableState(id, { isReserved: true });
+  };
+
+  const updateTableState = (id: string | number, updates: Partial<TableGetDto>) => {
+    setTables((prev) =>
+      prev.map((table) =>
+        table.id === id ? { ...table, ...updates } : table
+      )
+    );
+  };
 
   const placeOrder = async () => {
     if (!currentUser) {
       alert("Please log in before placing an order.");
+      return;
+    }
+
+    if(!locationId) {
+      alert("Please choose a location.");
       return;
     }
 
@@ -61,6 +94,14 @@ const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
         return;
       }
 
+      if (orderType === "table" && tableId) {
+        try{
+          await reserveTable(Number(tableId));
+        } catch(error) {
+          console.error("Table reservation failed.", error)
+        }
+      }
+
       clearCart();
       setTableId("");
       alert("Order placed!");
@@ -71,7 +112,7 @@ const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
 
   return (
     <div>
-      <h2>Cart</h2>
+      <h1>Cart</h1>
       <Flex
         style={{
           borderRadius: 10,
@@ -120,23 +161,6 @@ const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
             mb="sm"
           />
 
-          {orderType === "table" && (
-            <>
-              <p style={{ margin: "4px 0 2px" }}>Table Number:</p>
-              <input
-                type="number"
-                placeholder="e.g. 5"
-                value={tableId}
-                onChange={(e) => setTableId(e.target.value)}
-                style={{
-                  padding: 8,
-                  marginBottom: 8,
-                  backgroundColor: "white",
-                  color: "black",
-                }}
-              />
-            </>
-          )}
           <p style={{ margin: "8px 0 4px" }}>Location:</p>
           <Select
             placeholder="Select a location"
@@ -148,6 +172,21 @@ const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
             }))}
             mb="sm"
           />
+          {orderType === "table" && (
+            <>
+              <p style={{ margin: "4px 0 2px" }}>Available Tables:</p>
+              <Select
+                placeholder="Select an open table"
+                value={tableId}
+                onChange={(value) => setTableId(value ?? "")}
+                data={availableTables.map((table) => ({
+                  value: String(table.id),
+                  label: `Table ${table.id} (Seats ${table.capacity})`,
+                }))}
+                mb="sm"
+              />
+            </>
+          )}
 
           <p style={{ margin: "8px 0 2px" }}>Payment Information:</p>
           <p style={{ margin: 2 }}>Card Number:</p>

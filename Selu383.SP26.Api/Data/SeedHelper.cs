@@ -84,9 +84,9 @@ public static class SeedHelper
 			return;
 		}
 		dataContext.Set<Location>().AddRange(
-			new Location { Name = "Location 1", Address = "123 Main St", TableCount = 10 },
-			new Location { Name = "Location 2", Address = "456 Oak Ave", TableCount = 20 },
-			new Location { Name = "Location 3", Address = "789 Pine Ln", TableCount = 15 }
+			new Location { Name = "Main St", Address = "123 Main St", TableCount = 10 },
+			new Location { Name = "Oak Ave", Address = "456 Oak Ave", TableCount = 20 },
+			new Location { Name = "Pine Ln", Address = "789 Pine Ln", TableCount = 15 }
 		);
 
 		await dataContext.SaveChangesAsync();
@@ -130,9 +130,7 @@ public static class SeedHelper
 		}
 
 		dataContext.Set<Order>().AddRange(
-			new Order { UserId = 1, LocationId = 1, TableId = 1, Items = [1, 1, 2], Total = 16 },
-			new Order { UserId = 1, LocationId = 2, TableId = 2, Items = [2], Total = 6 },
-			new Order { UserId = 2, LocationId = 1, TableId = 1, Items = [1, 1, 2], Total = 16 }
+
 		);
 
 		await dataContext.SaveChangesAsync();
@@ -194,25 +192,25 @@ public static class SeedHelper
         new Table { LocationId = 2, Capacity = 2, IsReserved = true },
         new Table { LocationId = 2, Capacity = 2, IsReserved = false },
         new Table { LocationId = 2, Capacity = 2, IsReserved = false },
-        new Table { LocationId = 2, Capacity = 2, IsReserved = true },
         new Table { LocationId = 2, Capacity = 2, IsReserved = false },
         new Table { LocationId = 2, Capacity = 4, IsReserved = false },
         new Table { LocationId = 2, Capacity = 4, IsReserved = false },
-        new Table { LocationId = 2, Capacity = 4, IsReserved = true },
-        new Table { LocationId = 2, Capacity = 4, IsReserved = true },
         new Table { LocationId = 2, Capacity = 4, IsReserved = false },
         new Table { LocationId = 2, Capacity = 4, IsReserved = true },
         new Table { LocationId = 2, Capacity = 4, IsReserved = false },
+        new Table { LocationId = 2, Capacity = 4, IsReserved = true },
         new Table { LocationId = 2, Capacity = 4, IsReserved = false },
-        new Table { LocationId = 2, Capacity = 6, IsReserved = true },
+        new Table { LocationId = 2, Capacity = 4, IsReserved = false },
+        new Table { LocationId = 2, Capacity = 4, IsReserved = false },
         new Table { LocationId = 2, Capacity = 6, IsReserved = false },
         new Table { LocationId = 2, Capacity = 6, IsReserved = false },
         new Table { LocationId = 2, Capacity = 6, IsReserved = false },
-        new Table { LocationId = 2, Capacity = 8, IsReserved = true },
+        new Table { LocationId = 2, Capacity = 6, IsReserved = false },
+        new Table { LocationId = 2, Capacity = 8, IsReserved = false},
         new Table { LocationId = 2, Capacity = 8, IsReserved = true },
 
         new Table { LocationId = 3, Capacity = 2, IsReserved = false },
-        new Table { LocationId = 3, Capacity = 2, IsReserved = true },
+        new Table { LocationId = 3, Capacity = 2, IsReserved = false },
         new Table { LocationId = 3, Capacity = 2, IsReserved = false },
         new Table { LocationId = 3, Capacity = 2, IsReserved = false },
         new Table { LocationId = 3, Capacity = 2, IsReserved = true },
@@ -220,7 +218,7 @@ public static class SeedHelper
         new Table { LocationId = 3, Capacity = 2, IsReserved = false },
         new Table { LocationId = 3, Capacity = 4, IsReserved = false },
         new Table { LocationId = 3, Capacity = 4, IsReserved = true },
-        new Table { LocationId = 3, Capacity = 4, IsReserved = true },
+        new Table { LocationId = 3, Capacity = 4, IsReserved = false },
         new Table { LocationId = 3, Capacity = 4, IsReserved = false },
         new Table { LocationId = 3, Capacity = 4, IsReserved = true },
         new Table { LocationId = 3, Capacity = 6, IsReserved = false },
