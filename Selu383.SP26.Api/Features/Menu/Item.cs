@@ -19,4 +19,5 @@ public class Item
 
     public string Image { get; set; } = string.Empty;
 	public virtual ICollection<ItemIngredient> ItemIngredients { get; set; } = new List<ItemIngredient>();
+	public virtual ICollection<OrderItem> OrderItem { get; set; } = new List<OrderItem>();
 }

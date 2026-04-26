@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Selu383.SP26.Api.Data;
 
@@ -11,9 +12,11 @@ using Selu383.SP26.Api.Data;
 namespace Selu383.SP26.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260425203224_AddNameToOrder")]
+    partial class AddNameToOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,16 +354,6 @@ namespace Selu383.SP26.Api.Migrations
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PickedUpAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ReadyAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("TableId")
                         .HasColumnType("int");
 
@@ -372,10 +365,6 @@ namespace Selu383.SP26.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -399,10 +388,6 @@ namespace Selu383.SP26.Api.Migrations
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ItemName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Modifications")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -411,8 +396,6 @@ namespace Selu383.SP26.Api.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
 
                     b.HasIndex("OrderId");
 
@@ -564,12 +547,6 @@ namespace Selu383.SP26.Api.Migrations
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Orders.OrderItem", b =>
                 {
-                    b.HasOne("Selu383.SP26.Api.Features.Menu.Item", null)
-                        .WithMany("OrderItem")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Selu383.SP26.Api.Features.Orders.Order", null)
                         .WithMany("OrderItem")
                         .HasForeignKey("OrderId")
@@ -592,8 +569,6 @@ namespace Selu383.SP26.Api.Migrations
             modelBuilder.Entity("Selu383.SP26.Api.Features.Menu.Item", b =>
                 {
                     b.Navigation("ItemIngredients");
-
-                    b.Navigation("OrderItem");
                 });
 
             modelBuilder.Entity("Selu383.SP26.Api.Features.Orders.Order", b =>

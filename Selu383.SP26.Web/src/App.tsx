@@ -10,20 +10,15 @@ import "./App.css";
 import { AppShell, Flex } from "@mantine/core";
 import "@mantine/carousel/styles.css";
 import { useState, useEffect } from "react";
-import { type Item, type CartItem } from "./types";
+import { type ItemGetDto, type CartItemGetDto, type UserGetDto } from "./types";
 import Login from "./pages/Login.tsx";
-
-type CurrentUser = {
-  id: number;
-  userName: string;
-  roles: string[];
-};
+import Signup from "./pages/Signup.tsx";
 
 function App() {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  const [cart, setCart] = useState<CartItemGetDto[]>([]);
+  const [currentUser, setCurrentUser] = useState<UserGetDto | null>(null);
 
-  const addToCart = (item: Item) => {
+  const addToCart = (item: ItemGetDto) => {
     setCart((prev) => {
       const existing = prev.find((c) => c.id === item.id);
       if (existing) {
@@ -45,7 +40,7 @@ function App() {
           credentials: "include",
         });
         if (response.ok) {
-          const data: CurrentUser = await response.json();
+          const data: UserGetDto = await response.json();
           setCurrentUser(data);
         } else {
           setCurrentUser(null);
@@ -63,16 +58,17 @@ function App() {
     <div>
       <AppShell header={{ height: 70 }} footer={{ height: 100 }}>
         <AppShell.Header>
-          <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
+          <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} cart={cart} />
         </AppShell.Header>
         <AppShell.Main style={{ paddingLeft: 100, paddingRight: 100 }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/menu" element={<Menu addToCart={addToCart} />} />
-            <Route path="/cart" element={<Cart cart={cart} clearCart={clearCart} />} />
-            <Route path="/orders" element={<Orders />} />
+            <Route path="/menu" element={<Menu addToCart={addToCart} currentUser={currentUser}/>} />
+            <Route path="/cart" element={<Cart cart={cart} clearCart={clearCart} currentUser={currentUser} />} />
+            <Route path="/orders" element={<Orders currentUser={currentUser}/>} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AppShell.Main>

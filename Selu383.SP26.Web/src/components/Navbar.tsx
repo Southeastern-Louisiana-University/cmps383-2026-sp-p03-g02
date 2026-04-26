@@ -1,19 +1,15 @@
 import { Group, Text, Flex } from "@mantine/core";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Navbar.css";
-
-type CurrentUser = {
-  id: number;
-  userName: string;
-  roles: string[];
-};
+import type { CartItemGetDto, UserGetDto } from "../types";
 
 type NavbarProps = {
-  currentUser: CurrentUser | null;
-  setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUser | null>>;
+  cart: CartItemGetDto[];
+  currentUser: UserGetDto | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<UserGetDto | null>>;
 };
 
-function Navbar({ currentUser, setCurrentUser }: NavbarProps) {
+function Navbar({ currentUser, setCurrentUser, cart }: NavbarProps) {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -71,7 +67,7 @@ function Navbar({ currentUser, setCurrentUser }: NavbarProps) {
                 to="/cart"
                 className={({ isActive }) => (isActive ? "active" : "")}
               >
-                Cart
+                Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})
               </NavLink>
             </li>
           </ul>
