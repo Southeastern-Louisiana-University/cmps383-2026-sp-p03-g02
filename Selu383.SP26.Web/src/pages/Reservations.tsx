@@ -22,14 +22,21 @@ const Reservations = () => {
     return "#A5D6A7";
   };
 
-  const reserveTable = async (id: string | number) => {
-    await fetch(`/api/tables/${id}`, {
+  const reserveTable = async (table: TableGetDto) => {
+    const updatedTable = {
+      id: table.id,
+      locationId: table.locationId,
+      capacity: table.capacity,
+      isReserved: true,
+    }
+
+    await fetch(`/api/Tables/${table.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ isReserved: true }),
+      body: JSON.stringify({updatedTable}),
     });
 
-    updateTableState(id, { isReserved: true });
+    updateTableState(table.id, { isReserved: true });
   };
 
   const updateTableState = (id: string | number, updates: Partial<TableGetDto>) => {
@@ -45,7 +52,7 @@ const Reservations = () => {
   )
 
     useEffect(() => {
-        fetch("/api/tables")
+        fetch("/api/Tables")
         .then((res) => res.json())
         .then((res) => {
         setTables(res)
@@ -54,8 +61,8 @@ const Reservations = () => {
 
   return (
     <div>
-        <h1>Reservations</h1>
-        <SimpleGrid cols={4}>
+        <h1>Location {locationId}</h1>
+        <SimpleGrid cols={5}>
             {displayedTables.map((table) => {
                 const isOpen = !table.isReserved
 
@@ -73,6 +80,7 @@ const Reservations = () => {
                         cursor: "pointer"
                     }}>
                         <Text>Table</Text>
+                        <Text>Capacity: {table.capacity}</Text>
                         <Occupied 
                             isReserved={table.isReserved}
                         />
@@ -82,7 +90,7 @@ const Reservations = () => {
                                 <Button 
                                     size="xs" 
                                     color="yellow"
-                                    onClick={() => reserveTable(table.id)}>
+                                    onClick={() => reserveTable(table)}>
                                     Reserve
                                 </Button>
                             </Group>

@@ -36,7 +36,7 @@ const Locations = () => {
 
 return (
     <div>
-    <h1>Reservations</h1>
+    <h1>Locations</h1>
     <SimpleGrid cols={3}>
         {locations.map((location) => {
         const stats = getLocationStats(location.id);
