@@ -41,6 +41,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="shopping-cart" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="reservations"
+        options={{
+          title: 'Reservations',
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="envelope" color={color} />,
+        }}
+      />
     </Tabs>
     </CartProvider>
   );

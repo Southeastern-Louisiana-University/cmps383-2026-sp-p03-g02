@@ -21,7 +21,7 @@ export default function HomeScreen() {
     //header layout prototype
       <ParallaxScrollView
         headerBackgroundColor={{ light: '#9e844d', dark: '#9e844d' }}
-        headerText='Caffeinated Lions'
+        headerText='Menu'
       >
 
       <ThemedView style={styles.titleContainer}>
@@ -93,7 +93,7 @@ export default function HomeScreen() {
                 
                   <View style={styles.buttonRow}>
                     <Button title="Cancel" color="red" onPress={() => setSelectedItem(null)} />
-                    <Button title="Add to order :D" onPress={() => {
+                    <Button title="Add to order" onPress={() => {
                       addToCart(selectedItem);
                       alert(`${selectedItem.name} added to your order :3`);
                       setSelectedItem(null);

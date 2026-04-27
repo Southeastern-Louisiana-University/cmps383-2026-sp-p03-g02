@@ -31,7 +31,7 @@ export default function OrdersScreen() {
     //header layout prototype
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#9e844d', dark: '#9e844d' }}
-      headerText='Caffeinated Lions'
+      headerText='Your Cart'
       >
 
       <ThemedView style={styles.titleContainer}>
