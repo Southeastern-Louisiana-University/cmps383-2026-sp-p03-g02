@@ -35,6 +35,7 @@ export type LocationGetDto = {
 export type IngredientGetDto = {
   id: number;
   name: string;
+  type: string;
 }
 
 export type OrderGetDto = {
