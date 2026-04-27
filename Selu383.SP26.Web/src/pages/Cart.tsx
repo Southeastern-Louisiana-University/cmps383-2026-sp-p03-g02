@@ -77,6 +77,7 @@ const Cart = ({ cart, clearCart, currentUser }: CartProps) => {
         })),
       ),
       status: "In Progress",
+      type: orderType,
     };
 
     try {

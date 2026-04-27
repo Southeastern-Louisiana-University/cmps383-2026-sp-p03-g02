@@ -54,6 +54,7 @@ export type OrderGetDto = {
   }[];
   createdAt: string;
   status: string;
+  type: string;
 }
 
 export type TableGetDto = {

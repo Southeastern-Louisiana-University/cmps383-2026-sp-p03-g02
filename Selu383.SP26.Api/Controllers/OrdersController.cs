@@ -35,7 +35,8 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 				Items = x.Items,
 				CreatedAt = x.CreatedAt,
 				OrderItem = x.OrderItem,
-				status = x.status
+				status = x.status,
+				type = x.type
 			});
 	}
 
@@ -59,7 +60,8 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 				Items = x.Items,
 				CreatedAt = x.CreatedAt,
 				OrderItem = x.OrderItem,
-				status = x.status
+				status = x.status,
+				type = x.type
 			});
 	}
 
@@ -83,7 +85,8 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 			TableId = result.TableId,
 			Total = result.Total,
 			Items = result.Items,
-			status = result.status
+			status = result.status,
+			type = result.type,
 		});
 	}
 
@@ -153,7 +156,8 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 			Total = total,
 			Items = dto.Items,
 			OrderItem = orderItems,
-			status = dto.status
+			status = dto.status,
+			type = dto.type
 		};
 
 		dataContext.Set<Order>().Add(Order);
@@ -184,6 +188,7 @@ public class OrdersController(DataContext dataContext) : ControllerBase
 		Order.Total = dto.Total;
 		Order.Items = dto.Items;
 		Order.status = dto.status;
+		Order.type = dto.type;
 
 		dataContext.SaveChanges();
 

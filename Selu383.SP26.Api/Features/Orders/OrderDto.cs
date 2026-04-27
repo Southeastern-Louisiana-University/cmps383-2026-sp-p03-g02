@@ -15,6 +15,7 @@ public class OrderDto
 	public decimal Total { get; set; }
 	public string PaymentMethod { get; set; } = string.Empty;
 	public string status { get; set; } = string.Empty;
+	public string type { get; set; } = string.Empty;
 	public int[] Items { get; set; } = new int[] { };
 
 	[Column("created_at")]
