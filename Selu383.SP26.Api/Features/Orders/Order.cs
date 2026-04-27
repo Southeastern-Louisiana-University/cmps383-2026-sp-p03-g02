@@ -10,6 +10,7 @@ public class Order
 	public decimal Total { get; set; }
 	public string PaymentMethod { get; set; } = string.Empty;
 	public string status { get; set; } = string.Empty;
+	public string type { get; set; } = string.Empty;
 	public int[] Items { get; set; } = new int[] { }; //TEMPORARY
 
 	public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

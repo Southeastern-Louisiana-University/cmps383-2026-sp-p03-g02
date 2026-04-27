@@ -1,7 +1,7 @@
 import { Badge, Button, Card, Flex, Group } from "@mantine/core";
 import "../App.css";
-import { useState, useEffect } from "react";
-import type { OrderGetDto, UserGetDto } from "../types";
+import { useState, useEffect, useMemo } from "react";
+import type { LocationGetDto, OrderGetDto, UserGetDto } from "../types";
 import { Link } from "react-router-dom";
 
 interface OrderProps {
@@ -10,6 +10,7 @@ interface OrderProps {
 
 const Orders = ({ currentUser }: OrderProps) => {
   const [orders, setOrders] = useState<OrderGetDto[]>([]);
+  const [locations, setLocations] = useState<LocationGetDto[]>([]);
 
   const updateOrderStatus = async (orderId: number, status: string) => {
     const order = orders.find((o) => o.id === orderId);
@@ -45,6 +46,11 @@ const Orders = ({ currentUser }: OrderProps) => {
       alert("Failed to delete order");
     }
   };
+
+  const getLocations = useMemo(
+    () => new Map(locations.map((l) => [l.id, l.name])),
+    [locations],
+  );
 
   const userOrders =
     currentUser?.roles[0] === "Admin"
@@ -88,8 +94,11 @@ const Orders = ({ currentUser }: OrderProps) => {
               minute: "2-digit",
             }).format(new Date(order.createdAt + "Z"))}
           </Badge>
-          <Badge color="teal"> Location {order.locationId}</Badge>
-          <Badge color="violet"> Table {order.tableId}</Badge>
+          <Badge color="teal">
+            {getLocations.get(order.locationId) ??
+              `Location ${order.locationId}`}
+          </Badge>
+          <Badge color="violet"> {order.type === "table" ? `Table ${order.tableId}` : "Pickup"} </Badge>
           <Badge color="blue">
             {new Intl.NumberFormat("en-US", {
               style: "currency",
@@ -170,6 +179,11 @@ const Orders = ({ currentUser }: OrderProps) => {
         setOrders(res);
       });
 
+    fetch("/api/locations", { credentials: "include" })
+      .then((res) => res.json())
+      .then((res) => {
+        setLocations(res);
+      });
   }, []);
 
   return (

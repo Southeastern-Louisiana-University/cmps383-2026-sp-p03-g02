@@ -19,8 +19,8 @@ public class TablesController(DataContext dataContext) : ControllerBase
 			{
 				Id = x.Id,
 				LocationId = x.LocationId,
-				IsOccupied = x.IsOccupied,
 				IsReserved = x.IsReserved,
+				Capacity = x.Capacity,
 			});
 	}
 
@@ -39,8 +39,8 @@ public class TablesController(DataContext dataContext) : ControllerBase
 		{
 			Id = result.Id,
 			LocationId = result.LocationId,
-			IsOccupied = result.IsOccupied,
 			IsReserved = result.IsReserved,
+			Capacity = result.Capacity,
 		});
 	}
 
@@ -52,8 +52,8 @@ public class TablesController(DataContext dataContext) : ControllerBase
 		var Table = new Table
 		{
 			LocationId = dto.LocationId,
-			IsOccupied = dto.IsOccupied,
 			IsReserved = dto.IsReserved,
+			Capacity = dto.Capacity,
 		};
 
 		dataContext.Set<Table>().Add(Table);
@@ -78,10 +78,10 @@ public class TablesController(DataContext dataContext) : ControllerBase
 		}
 
 		Table.LocationId = dto.LocationId;
-		Table.IsOccupied = dto.IsOccupied;
 		Table.IsReserved = dto.IsReserved;
+		Table.Capacity = dto.Capacity;
 
-		dataContext.SaveChanges();
+        dataContext.SaveChanges();
 
 		dto.Id = Table.Id;
 
