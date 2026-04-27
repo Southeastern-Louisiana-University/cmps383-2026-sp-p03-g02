@@ -24,7 +24,7 @@ public static class SeedHelper
 		await AddItems(dataContext);
 		await AddOrders(dataContext);
 		await AddIngredients(dataContext);
-		await AddItemIngredients(dataContext);
+		//await AddItemIngredients(dataContext);
 	}
 
 	private static async Task AddUsers(IServiceProvider serviceProvider)
