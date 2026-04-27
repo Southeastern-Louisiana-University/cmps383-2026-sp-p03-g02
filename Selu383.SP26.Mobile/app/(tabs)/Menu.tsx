@@ -1,7 +1,8 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet, Modal, View, Button, TouchableOpacity } from 'react-native';
-import { useState} from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from '@/hooks/user-cart';
+import { menuItems, MenuItem } from '@/constants/menu-items';
 
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
@@ -9,26 +10,13 @@ import { ThemedView } from '@/components/themed-view';
 import { Link } from 'expo-router';
 import { Assets } from '@react-navigation/elements';
 
-interface MenuItem {
-  name: string;
-  img: any;
-  desc: string;
-  price: number;
-  type: 'drink' | 'food';
-}
-
 export default function HomeScreen() {
     const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
     const { addToCart } = useCart();
 
-    const menuItems: MenuItem[] = [
-      { name: 'Coffee', img: require('@/assets/images/coffer.png'), desc: 'Just a regular coffee', price: 2.70, type: 'drink'},
-      { name: 'Evil Coffee', img: require('@/assets/images/Dark fucked up coffee.jpg'), desc: 'coffee but no coffee', price: 280.00, type: 'drink' },
-      { name: 'Cattuccino', img: require('@/assets/images/cattuccino.png'), desc: 'cat but coffee', price: 5.75, type: 'drink' },
-    ];
-
-    const drinks = menuItems.filter(item => item.type === 'drink');
+    const drinks = menuItems.filter(item => item.type === 'Coffee');
     const food = menuItems.filter(item => item.type === 'food');
+
     return (
     //header layout prototype
       <ParallaxScrollView
@@ -37,7 +25,7 @@ export default function HomeScreen() {
       >
 
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="subtitle">Yummy soder</ThemedText>
+        <ThemedText type="subtitle">Coffee</ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.fullCat}>
@@ -45,16 +33,16 @@ export default function HomeScreen() {
           <TouchableOpacity key={index} onPress={() => setSelectedItem(item)}>
 
             <ThemedView style={styles.card}>
-              <Image source={item.img} style={styles.cardImage} />
+              <Image source={item.image} style={styles.cardImage} />
               <ThemedText style={styles.cardText}>{item.name} ${item.price.toFixed(2)}</ThemedText>
-              <ThemedText type="subtitle" style={{color: '#424242', fontSize: 12}}>{item.desc}</ThemedText>
+              <ThemedText type="subtitle" style={{color: '#424242', fontSize: 12}}>{item.description}</ThemedText>
             </ThemedView>
           </TouchableOpacity>
           ))}
       </ThemedView>
 
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="subtitle">Evil Fries</ThemedText>
+        <ThemedText type="subtitle">Crepe</ThemedText>
       </ThemedView>
 
       
@@ -63,9 +51,26 @@ export default function HomeScreen() {
           <TouchableOpacity key={index} onPress={() => setSelectedItem(item)}>
 
             <ThemedView style={styles.card}>
-              <Image source={item.img} style={styles.cardImage} />
+              <Image source={item.image} style={styles.cardImage} />
               <ThemedText style={styles.cardText}>{item.name} {item.price}</ThemedText>
-              <ThemedText type="subtitle" style={{color: '#424242', fontSize: 12}}>{item.desc}</ThemedText>
+              <ThemedText type="subtitle" style={{color: '#424242', fontSize: 12}}>{item.description}</ThemedText>
+            </ThemedView>
+          </TouchableOpacity>
+          ))}
+      </ThemedView>
+
+      <ThemedView style={styles.titleContainer}>
+        <ThemedText type="subtitle">Bagel</ThemedText>
+      </ThemedView>
+
+      <ThemedView style={styles.fullCat}>
+        {drinks.map((item, index) => (
+          <TouchableOpacity key={index} onPress={() => setSelectedItem(item)}>
+
+            <ThemedView style={styles.card}>
+              <Image source={item.image} style={styles.cardImage} />
+              <ThemedText style={styles.cardText}>{item.name} ${item.price.toFixed(2)}</ThemedText>
+              <ThemedText type="subtitle" style={{color: '#424242', fontSize: 12}}>{item.description}</ThemedText>
             </ThemedView>
           </TouchableOpacity>
           ))}
@@ -81,9 +86,9 @@ export default function HomeScreen() {
               {selectedItem && (
                 <>
                   <ThemedText type="title">PlaceOrder</ThemedText>
-                  <Image source={selectedItem.img} style={styles.modalImage} />
+                  <Image source={selectedItem.image} style={styles.modalImage} />
                   <ThemedText style={{fontWeight: 'bold', fontSize: 20}}>{selectedItem.name}</ThemedText>
-                  <ThemedText>{selectedItem.desc}</ThemedText>
+                  <ThemedText>{selectedItem.description}</ThemedText>
                   <ThemedText type="subtitle">${selectedItem.price.toFixed(2)}</ThemedText>
                 
                   <View style={styles.buttonRow}>

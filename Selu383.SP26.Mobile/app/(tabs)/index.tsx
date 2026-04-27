@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { Platform, StyleSheet, Modal, View, Button, TouchableOpacity } from 'react-native';
 
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
@@ -7,8 +8,14 @@ import { ThemedView } from '@/components/themed-view';
 import { Link } from 'expo-router';
 import { Assets } from '@react-navigation/elements';
 import { ScrollView } from 'react-native';
+import { useCart } from '@/hooks/user-cart';
+import { menuItems, MenuItem } from '../../constants/menu-items';
+
 
 export default function HomeScreen() {
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const { addToCart } = useCart();
+
   return (
     //header layout prototype
     <ParallaxScrollView
@@ -32,17 +39,15 @@ export default function HomeScreen() {
         <ScrollView 
           horizontal 
           showsHorizontalScrollIndicator={false} 
-          contentContainerStyle={{ paddingHorizontal: 10, gap: 15 }}
-        >
-          {[
-            { name: 'Coffee', img: require('@/assets/images/coffer.png') },
-            { name: 'Evil Coffee', img: require('@/assets/images/Dark fucked up coffee.jpg') },
-            { name: 'Cattuccino', img: require('@/assets/images/cattuccino.png') },
-          ].map((item, index) => (
-            <ThemedView key={index} style={styles.card}>
-              <Image source={item.img} style={styles.cardImage} />
-              <ThemedText style={styles.cardText}>{item.name}</ThemedText>
-            </ThemedView>
+          contentContainerStyle={{ paddingHorizontal: 10, gap: 15 }}>
+          {(menuItems || []).map((item, index) => (
+            <TouchableOpacity key={index} onPress={() => setSelectedItem(item)}>
+              <ThemedView style={styles.card}>
+                <Image source={item.image} style={styles.cardImage} />
+                <ThemedText style={styles.cardText}>{item.name}</ThemedText>
+                <ThemedText style={{fontSize: 12}}>${item.price.toFixed(2)}</ThemedText>
+              </ThemedView>
+            </TouchableOpacity>
           ))}
         </ScrollView>
       </ThemedView>
@@ -71,6 +76,34 @@ export default function HomeScreen() {
           </Link.Menu>
         </Link>
       </ThemedView>
+            <Modal
+              visible={selectedItem !== null}
+              transparent = {true}
+              animationType="slide"
+              >
+                <View style={styles.modalOverlay}>
+                  <View style={styles.modalContent}>
+                    {selectedItem && (
+                      <>
+                        <ThemedText type="title">PlaceOrder</ThemedText>
+                        <Image source={selectedItem.image} style={styles.modalImage} />
+                        <ThemedText style={{fontWeight: 'bold', fontSize: 20}}>{selectedItem.name}</ThemedText>
+                        <ThemedText>{selectedItem.description}</ThemedText>
+                        <ThemedText type="subtitle">${selectedItem.price.toFixed(2)}</ThemedText>
+                      
+                        <View style={styles.buttonRow}>
+                          <Button title="Cancel" color="red" onPress={() => setSelectedItem(null)} />
+                          <Button title="Add to order" onPress={() => {
+                            addToCart(selectedItem);
+                            alert(`${selectedItem.name} has been added to your order!`);
+                            setSelectedItem(null);
+                          }} />
+                        </View>
+                      </>
+                    )}
+                  </View>
+                </View>
+              </Modal>
     </ParallaxScrollView>
   );
 }
@@ -108,4 +141,28 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
   },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: '#0000001e',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: '#ffeabc',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    gap: 10,
+  },
+  modalImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: 20,
+    marginTop: 10,
+  }
 });

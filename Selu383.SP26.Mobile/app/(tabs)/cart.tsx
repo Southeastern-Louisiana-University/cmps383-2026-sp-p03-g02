@@ -11,11 +11,12 @@ import { Assets } from '@react-navigation/elements';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 interface MenuItem {
+  id: number;
   name: string;
-  img: any;
-  desc: string;
+  image: any;
+  description: string;
   price: number;
-  type: 'drink' | 'food';
+  type: string;
   quantity?: number;
 }
 
@@ -34,18 +35,18 @@ export default function OrdersScreen() {
       >
 
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="subtitle">ur current order</ThemedText>
+        <ThemedText type="subtitle">Your Current Order</ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.fullCat}>
         {cart.length === 0 ? (
           <ThemedText style={{ textAlign: 'center', marginTop: 20}}>
-            ur cart empty type splish ong
+            All quiet on the shopping cart front..
           </ThemedText>
         ) : (
           cart.map((item: MenuItem, index: number) => (
             <ThemedView key={index} style={styles.card}>
-              <Image source={item.img} style={styles.cardImage} />
+              <Image source={item.image} style={styles.cardImage} />
 
               <View style={styles.textContainer}>
                 <ThemedText style={styles.cardText}>

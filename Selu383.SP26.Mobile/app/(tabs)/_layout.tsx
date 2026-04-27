@@ -28,16 +28,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="menu"
+        name="Menu"
         options={{
           title: 'Menu',
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="coffee" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="orders"
+        name="cart"
         options={{
-          title: 'Orders',
+          title: 'Cart',
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="shopping-cart" color={color} />,
         }}
       />
