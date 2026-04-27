@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { Card, Text, Button, Group, SimpleGrid } from '@mantine/core';
+import { Card, Text, SimpleGrid } from '@mantine/core';
 import type { TableGetDto, LocationGetDto } from "../types";
 import { useParams } from "react-router-dom"
 
@@ -48,7 +48,6 @@ const Reservations = () => {
         <h1>{location?.address}</h1>
         <SimpleGrid cols={5}>
             {displayedTables.map((table) => {
-                const isOpen = !table.isReserved
 
                 return ( 
                     <Card 
