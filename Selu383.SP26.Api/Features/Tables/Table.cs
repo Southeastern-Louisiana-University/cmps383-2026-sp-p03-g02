@@ -7,8 +7,8 @@ public class Table
 	public int Id { get; set; }
 	public int LocationId { get; set; }
 
-	public bool IsOccupied { get; set; } = false;
 	public bool IsReserved { get; set; } = false;
+	public int Capacity { get; set; }
 	public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }
 

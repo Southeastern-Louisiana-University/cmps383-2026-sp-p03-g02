@@ -35,6 +35,7 @@ export type LocationGetDto = {
 export type IngredientGetDto = {
   id: number;
   name: string;
+  type: string;
 }
 
 export type OrderGetDto = {
@@ -54,10 +55,13 @@ export type OrderGetDto = {
   }[];
   createdAt: string;
   status: string;
+  type: string;
 }
 
 export type TableGetDto = {
   id: number;
-  isOccupied: boolean;
+  capacity: number;
+  locationId: number;
   isReserved: boolean;
 }
+

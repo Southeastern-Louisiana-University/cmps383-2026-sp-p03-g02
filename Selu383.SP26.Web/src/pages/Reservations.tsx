@@ -1,56 +1,53 @@
 import {useEffect, useState} from "react";
-import { Card, Text, Button, Group, SimpleGrid } from '@mantine/core';
-import type { TableGetDto } from "../types";
+import { Card, Text, SimpleGrid } from '@mantine/core';
+import type { TableGetDto, LocationGetDto } from "../types";
+import { useParams } from "react-router-dom"
 
 const Reservations = () => { 
   const [tables, setTables] = useState<TableGetDto[]>([]);
+  const { locationId } = useParams();
+  const [locations, setLocations] = useState<LocationGetDto[]>([]);
+  const selectedLocationId = Number(locationId);
 
-function Occupied({ isReserved }: { isReserved: boolean }) {
-  if (isReserved) {
-    return <Text>Reserved</Text>;
-  } 
-  return <Text>Open</Text>;
-}
-
-  const getColor = (table: TableGetDto) => {
-  if (table.isReserved) {
-    return "#EF9A9A";
+  function Occupied({ isReserved }: { isReserved: boolean }) {
+    if (isReserved) {
+      return <Text>Reserved</Text>;
+    } 
+    return <Text>Open</Text>;
   }
-  return "#A5D6A7";
-};
 
-const reserveTable = async (id: string | number) => {
-  await fetch(`/api/tables/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ isReserved: true }),
-  });
+    const getColor = (table: TableGetDto) => {
+    if (table.isReserved) {
+      return "#EF9A9A";
+    }
+    return "#A5D6A7";
+  };
 
-  updateTableState(id, { isReserved: true });
-};
+  const displayedTables = tables.filter(
+    (table) => table.locationId === selectedLocationId
+  )
 
-const updateTableState = (id: string | number, updates: Partial<TableGetDto>) => {
-  setTables((prev) =>
-    prev.map((table) =>
-      table.id === id ? { ...table, ...updates } : table
-    )
-  );
-};
+    useEffect(() => {
+        fetch("/api/tables")
+        .then((res) => res.json())
+        .then((res) => {
+        setTables(res)
+        });
 
-  useEffect(() => {
-      fetch("/api/tables")
-      .then((res) => res.json())
-      .then((res) => {
-      setTables(res)
-      });
-}, [])
+        fetch("/api/locations")
+        .then((res) => res.json())
+        .then((res) => {
+        setLocations(res)        
+    })
+  }, [])
+
+  const location = locations.find((t) => t.id === Number(locationId))
 
   return (
     <div>
-        <h1>Reservations</h1>
-        <SimpleGrid cols={4}>
-            {tables.map((table) => {
-                const isOpen = !table.isReserved
+        <h1>{location?.address}</h1>
+        <SimpleGrid cols={5}>
+            {displayedTables.map((table) => {
 
                 return ( 
                     <Card 
@@ -65,21 +62,22 @@ const updateTableState = (id: string | number, updates: Partial<TableGetDto>) =>
                         textAlign: "center",
                         cursor: "pointer"
                     }}>
-                        <Text>Table</Text>
+                        <Text>Table {table.id}</Text>
+                        <Text>Capacity: {table.capacity}</Text>
                         <Occupied 
                             isReserved={table.isReserved}
                         />
 
-                        {isOpen && (
+                        {/* {isOpen && (
                             <Group mt="md" justify="center">
                                 <Button 
                                     size="xs" 
                                     color="yellow"
-                                    onClick={() => reserveTable(table.id)}>
+                                    onClick={() => reserveTable(table)}>
                                     Reserve
                                 </Button>
                             </Group>
-                        )}
+                        )} */}
                     </Card>
                 )
             })}

@@ -52,6 +52,10 @@ const Menu = ({ addToCart, currentUser }: MenuProps) => {
     isSeasonal: false,
   });
 
+  const filteredIngredients = ingredients.filter(
+    (ingredient) => ingredient.type === selectedItem?.type
+  )
+
   const openModal = (item: ItemGetDto) => {
     setSelectedItem(item);
     setEditItem({
@@ -308,7 +312,7 @@ const Menu = ({ addToCart, currentUser }: MenuProps) => {
               Ingredients:
             </Text>
             <SimpleGrid cols={2}>
-              {ingredients.map((ingredient) => (
+              {filteredIngredients.map((ingredient) => (
                 <Checkbox
                   label={ingredient.name}
                   checked={selectedIngredientIds.includes(ingredient.id)}
@@ -434,7 +438,7 @@ const Menu = ({ addToCart, currentUser }: MenuProps) => {
         </Stack>
       </Modal>
 
-      <h1>Menu Page</h1>
+      <h1>Menu</h1>
       {adminFeatures}
 
       <Group mb="md">
