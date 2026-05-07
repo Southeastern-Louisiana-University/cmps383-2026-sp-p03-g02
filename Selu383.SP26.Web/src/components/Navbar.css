@@ -1,0 +1,91 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(218, 200, 173);
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    right: 0; 
+    left: 0;
+}
+
+nav a {
+    transition: 0.2s ease-in-out;
+}
+
+nav a:hover {
+    transform: scale(1.1);
+    color: rgb(255, 224, 187);
+}
+
+.active {
+    transform: scale(1.05);
+    background-image: linear-gradient(rgb(218, 200, 173),rgba(0, 0, 0, 0.071));
+}
+
+nav .title{
+    font-size: 2rem;
+    margin: 1rem;
+    font-family: 'Brush Script MT', cursive;
+    font-weight: bold;
+    text-decoration: none;
+    color: rgb(250, 246, 241);
+}
+
+nav .login{
+    margin: 1rem;
+    font-weight: bold;    
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-family: "Trebuchet MS";
+    color: rgb(250, 246, 241);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: rgba(0, 0, 0, 0);
+}
+nav .login a:hover {
+    transform: scale(1.1);
+    color: rgb(255, 224, 187);
+}
+
+.login.active {
+    transform: scale(1.05);
+    background-image: linear-gradient(rgb(218, 200, 173),rgba(0, 0, 0, 0.071));
+}
+
+
+nav ul {
+    position: center;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    gap: 20px;
+    margin: 0 auto;
+}
+
+nav ul li {
+    list-style: none;
+}
+
+nav ul li a {
+    display: block;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-family: "Trebuchet MS";
+    color: rgb(250, 246, 241);
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    border-radius: 0.5rem;
+}
+
+nav .right, .left {
+    flex: 1;
+    display: flex;
+}
+
+nav .right{
+    justify-content: flex-end;
+    margin-right: 30px;
+}

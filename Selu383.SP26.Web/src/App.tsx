@@ -1,75 +1,82 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./Navbar.tsx";
-import Home from "./compnents/Home.tsx";
-import Menu from "./compnents/Menu.tsx";
-import Orders from "./compnents/Orders.tsx";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer.tsx";
+import Home from "./pages/Home.tsx";
+import Menu from "./pages/Menu.tsx";
+import Orders from "./pages/Orders.tsx";
+import Locations from "./pages/Locations.tsx"
+import Reservations from "./pages/Reservations.tsx";
+import Cart from "./pages/Cart.tsx";
 import "./App.css";
 import { AppShell, Flex } from "@mantine/core";
-import { useRef } from "react";
-
-import beans from "./assets/beans.jpg";
-import Login from "./compnents/Login.tsx";
+import "@mantine/carousel/styles.css";
+import { useState, useEffect } from "react";
+import { type ItemGetDto, type CartItemGetDto, type UserGetDto } from "./types";
+import Login from "./pages/Login.tsx";
+import Signup from "./pages/Signup.tsx";
 
 function App() {
-  const headerRef = useRef<HTMLDivElement>(null);
-  
+  const [cart, setCart] = useState<CartItemGetDto[]>([]);
+  const [currentUser, setCurrentUser] = useState<UserGetDto | null>(null);
+
+  const addToCart = (item: ItemGetDto) => {
+    setCart((prev) => {
+      const existing = prev.find((c) => c.id === item.id);
+      if (existing) {
+        return prev.map((c) =>
+          c.id === item.id ? { ...c, quantity: c.quantity + 1 } : c
+        );
+      }
+      return [...prev, { ...item, quantity: 1 }];
+    });
+  };
+
+  const clearCart = () => setCart([]);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await fetch("/api/authentication/me", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (response.ok) {
+          const data: UserGetDto = await response.json();
+          setCurrentUser(data);
+        } else {
+          setCurrentUser(null);
+        }
+      } catch (error) {
+        console.error("Failed to get current user:", error);
+        setCurrentUser(null);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
   return (
     <div>
-      <AppShell>
-        <AppShell.Header
-          ref={headerRef}
-          style={{
-            width: "75vw",
-            display: "grid",
-            justifyContent: "center",
-            padding: "20px",
-            position: "relative",
-            backgroundImage: `url(${beans})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            borderRadius: "25px",
-          }}
-        >
-          <Navbar />
+      <AppShell header={{ height: 70 }} footer={{ height: 100 }}>
+        <AppShell.Header>
+          <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} cart={cart} />
         </AppShell.Header>
-
-        <AppShell.Main>
+        <AppShell.Main style={{ paddingLeft: 100, paddingRight: 100 }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/menu" element={<Menu />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route
-              path="/reservations"
-              element={
-                <div>
-                  <h1>Reservations Page</h1>
-                  <p>Coming soon...</p>
-                </div>
-              }
-            />
-            <Route
-              path="/login"
-              element={<Login />}
-            />
+            <Route path="/menu" element={<Menu addToCart={addToCart} currentUser={currentUser}/>} />
+            <Route path="/cart" element={<Cart cart={cart} clearCart={clearCart} currentUser={currentUser} />} />
+            <Route path="/orders" element={<Orders currentUser={currentUser}/>} />
+            <Route path="/locations" element={<Locations />} /> 
+            <Route path="/locations/:locationId" element={<Reservations />} />
+            <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AppShell.Main>
-
-        <AppShell.Footer
-          style={{
-            position: "relative",
-          }}
-        >
-          <Flex
-            style={{
-              marginTop: "20px",
-              padding: "10px",
-              justifyContent: "center",
-            }}
-          >
-            <p style={{ margin: 0 }}>
-              © 2026 Caffeinated Lions. All rights reserved.
-            </p>
+        <AppShell.Footer style={{ position: "relative" }}>
+          <Flex style={{ marginTop: "20px", padding: "10px", justifyContent: "center" }}>
+            <Footer />
           </Flex>
         </AppShell.Footer>
       </AppShell>

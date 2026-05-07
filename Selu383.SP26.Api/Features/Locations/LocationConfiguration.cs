@@ -10,5 +10,13 @@ public class LocationConfiguration : IEntityTypeConfiguration<Location>
         builder.Property(x => x.Name)
             .IsRequired()
             .HasMaxLength(120);
-    }
+
+		builder
+			.HasOne(x => x.Manager)
+			.WithMany()
+			.HasForeignKey(x => x.ManagerId)
+			.IsRequired(false)
+			.OnDelete(DeleteBehavior.SetNull);
+
+	}
 }
